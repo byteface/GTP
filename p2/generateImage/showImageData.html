@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+	   
+<canvas id="can" width="783", height="783"></canvas>
+
+<script type="text/javascript">
+
+var im = new Image();
+im.onload = imageLoaded;
+im.src = "neg.gif"; // code assumes this image is 200x200
+
+// need entire base64 mapping
+
+var map =['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0',',','.','\'','\"','-','[',']','?','!',';',':','(',')','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '];
+
+
+function imageLoaded(ev) {
+
+        window.console.log( "HI" );
+
+	element = document.getElementById("can");
+	c = element.getContext("2d");
+
+	im = ev.target; // the image, assumed to be 783x783 current negative map
+	
+	// read the width and height of the canvas
+	width = parseInt(element.getAttribute("width"));
+	height = parseInt(element.getAttribute("height"));
+
+	// stamp the image on the left of the canvas:
+	c.drawImage(im, 0, 0);
+
+	// get all canvas pixel data
+	imageData = c.getImageData(0, 0, width, height);
+    var pix = imageData.data;
+
+    var str = "";
+    
+    for (var i = 0, n = pix.length; i < n; i += 4) {
+        str += map[pix[i]]+"";
+//        str += map[pix[i+1]]+"";        
+//        str += map[pix[i+2]]+"";                
+//        str += map[pix[i+3]]+"";                        
+    }
+        
+    //window.console.log( str );
+    
+    
+    document.write(str);
+
+}
+
+
+</script>
+
+
+
+				
+	</body>
+</html>
