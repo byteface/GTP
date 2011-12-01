@@ -125,7 +125,7 @@ class GenerateImage {
                 $char2 = mb_substr($contents, $charCount+1, 1);
                 $char3 = mb_substr($contents, $charCount+2, 1);
                 
-                $col = imagecolorallocate( $gd, $this->colorise( $char ), $this->colorise( $char2 ), $this->colorise( $char3 ) ); // were doing letters.. however if we did words it would be good to use G/B as pos/neg
+                $col = imagecolorallocate( $gd, $this->colorise( $char ), $this->colorise( $char2 ), $this->colorise( $char3 ) );
                 
                 imagesetpixel( $gd, $xPos, $yPos, $col );
                 
