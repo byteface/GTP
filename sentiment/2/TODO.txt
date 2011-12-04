@@ -1,0 +1,21 @@
+full stop for line breaks
+
+
+
+TODO
+
+generate knowledge maps from social networks that you can run queries on.
+
+also knowledge maps on topics
+
+dynamic creation of knowledge maps for problem solving
+
+share price maps
+
+
+
+
+
+REFACTOR
+
+bake method - bakes data maps

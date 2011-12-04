@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+
+	   <script type="text/javascript" src="js/includer.js"></script>
+	   
+	   <script>
+	   
+	       // load a positive opinion image
+	       var pos = new GTP.Loader();
+	       pos.loadData( "data/positive.png", "positive", onPositiveDataLoaded );
+	       
+	       var sentiment = SentimentImage;
+	       var neg;// = new GtpLoader.loader();
+	       
+	       function onPositiveDataLoaded(){
+	           
+	           sentiment.addToIndex( pos.pixelData, 'positive_map', 'pos' );
+	       
+	       	   neg = new GTP.Loader()
+	       	   neg.loadData( "data/negative.png", "negative", onNegativeDataLoaded );         
+	       }
+
+	       function onNegativeDataLoaded(){
+                      
+                sentiment.addToIndex( neg.pixelData, 'negative_map', 'neg' );
+                
+                showTokenisedImage();
+	       }
+
+
+            function showTokenisedImage()
+            {
+                sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
+                
+                
+               // opinion.createDataImage( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment", 'query_map' ); /// this one returns wrong map as chars aren't encoded
+                 
+                 
+                sentiment.createDataImage( "it was wonderful, marvelous great. loved every minute of it and would certainly go back again. i cant wait to tell all my friends one of the best movies i have ever seen.", 'query_map' ); /// this one returns wrong map as chars aren't encoded
+                 
+                /// NOTE - this one returns wrong map as chars aren't 
+                //opinion.createDataImage( "I really didn't rate the film, i was quite excited but let down again", 'query_map' );encoded
+                 
+                 
+                var mydata = sentiment.getPixelData( 'query_map' ); // should i use callback first incase this is big?... dont think so.
+                var pix = mydata.data;
+
+                var i=0;
+                var len=pix.length;
+                var rawData=[];
+                
+                for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
+                    rawData.push( GTP.Map.checkChar( pix[i] ) );
+                    rawData.push( GTP.Map.checkChar( pix[i+1] ) );
+                    rawData.push( GTP.Map.checkChar( pix[i+2] ) );
+                }
+            
+                var str = rawData.join("");
+    
+    
+//                window.console.log(str);
+
+
+// FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
+
+                sentiment.createDataImage( str, 'actual_query_map' ); /// this one returns wrong map as chars aren't encoded
+                var finalQueryData = sentiment.getPixelData( 'query_map' );
+                var fpix = finalQueryData.data;
+
+//              classify();
+
+                window.console.log( "FPIX" );
+                window.console.log( fpix );
+
+
+                sentiment.classify( fpix );
+                
+            }
+
+		</script>
+				
+	</body>
+</html>
