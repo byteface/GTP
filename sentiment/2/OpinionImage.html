@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+
+	   <script type="text/javascript" src="GtpLoader.js"></script>
+	   <script type="text/javascript" src="Opinion.js"></script>
+	   <script type="text/javascript" src="OpinionImage.js"></script>
+
+	   
+	   <script>
+	   
+	       // load a positive opinion image
+	       var pos = new GtpLoader.loader();
+	       pos.loadData( "positive.png", "positive", onPositiveDataLoaded );
+	       
+	       var opinion = OpinionImage;
+	       var neg;// = new GtpLoader.loader();
+	       
+	       function onPositiveDataLoaded(){
+	           
+	           opinion.addToIndex( pos.pixelData, 'positive_map', 'pos' );
+	       
+	       	   neg = new GtpLoader.loader();
+	       	   neg.loadData( "negative.png", "negative", onNegativeDataLoaded );         
+	       }
+
+	       function onNegativeDataLoaded(){
+                      
+                opinion.addToIndex( neg.pixelData, 'negative_map', 'neg' );
+                
+                showTokenisedImage();
+	       }
+
+
+            function showTokenisedImage()
+            {
+                opinion.createDataImage( opinion.tokenisedImageData, 'tokenised_map' );
+                
+                
+                opinion.createDataImage( "with this new rollerball , sense and sensibility have been overrun by what can only be characterized as robotic sentiment", 'query_map' ); /// this one returns wrong map as chars aren't encoded
+                 
+                 
+                
+               // opinion.createDataImage( "I thought its was great, awesome great brilliant", 'query_map' );
+                 
+                 
+                /// NOTE - this one returns wrong map as chars aren't 
+                //opinion.createDataImage( "I really didn't rate the film, i was quite excited but let down again", 'query_map' );encoded
+                 
+                 
+                var mydata = opinion.getPixelData( 'query_map' ); // should i use callback first incase this is big?... dont think so.
+                var pix = mydata.data;
+
+                var i=0;
+                var len=pix.length;
+                var rawData=[];
+                
+                for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
+                    rawData.push( checkChar(  pix[i] ) );
+                    rawData.push( checkChar(  pix[i+1] ) );
+                    rawData.push( checkChar(  pix[i+2] ) );
+                }
+            
+                var str = rawData.join("");
+    
+    
+//                window.console.log(str);
+
+
+// FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
+
+                opinion.createDataImage( str, 'actual_query_map' ); /// this one returns wrong map as chars aren't encoded
+                var finalQueryData = opinion.getPixelData( 'query_map' );
+                var fpix = finalQueryData.data;
+
+//              classify();
+
+                window.console.log( "FPIX" );
+                window.console.log( fpix );
+
+
+                opinion.classify( fpix );
+                
+            }
+
+
+
+function checkChar( someChar )
+{
+    theCharacter="-"+someChar+"-";
+    
+     // HOPING OUR FAIL CHAR REPRESENTS NEW LINE
+    if(theCharacter=="-244-")
+    {
+        theCharacter="--244--";
+    }
+
+     // SPACES
+    if(theCharacter=="-255-")
+    {
+        theCharacter="--255--";
+    }
+    
+    if(theCharacter=="-0-")
+    {
+        theCharacter="";
+    }    
+
+    
+    return theCharacter;
+}
+
+
+	       // load a negative opinion image
+	    //   var neg = new GtpLoader.loader();
+//	       pos.storeMap( "negative.png", "negative" );	       
+	       
+	       
+
+       // var gtp = Gtp;        
+//        gtp.createDataImage( "I didn't like it very much I didn't like it very much I didn't like it very much I didn't like it very much I didn't like it very much" );
+        
+        
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+//	       var opinion = OpinionImage;
+	     //  opinion.addToIndex( 'positive', 'pos' );
+//	       opinion.addToIndex( 'negative', 'neg' );
+	       
+	       
+	       
+	       /*
+	       var neg = new Gtp.loader();
+	       neg.init( "negative.png" );
+	       maps.addMap( neg );
+  
+	       var opinion = OpinionImage;
+	       opinion.addToIndex( pos, 'pos' );	       
+	       opinion.addToIndex( neg, 'neg' );
+
+	       var  myString = "I didn't like it really, thought it was really bad";
+	       
+	       window.console.log( "Classify::" );
+	       window.console.log( opinion.classify(myString) );
+	       		
+	       		*/
+		</script>
+				
+	</body>
+</html>

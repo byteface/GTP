@@ -1,4 +1,70 @@
-Gtp = {
+var GtpLoader = GtpLoader || {};
+
+GtpLoader.loader = function(  ) {
+//    this.value
+}
+
+
+
+//GtpLoader.pixelData = null;
+
+GtpLoader.loader.prototype = {
+
+    pixelData : null,
+    data : null,
+
+    loadData : function( file, canvasName, callback )
+    {
+        var im = new Image();        
+        var selfRef = this; 
+        im.onload = function( e ){ selfRef.drawImage( e, canvasName, callback ) };
+        im.src = file;//"ImageGenTest.png";
+    },
+
+    drawImage : function ( ev, canvasName, callback ) {
+        
+        document.write('<canvas id="'+ canvasName +'" width="' + 452 + '", height="' + 452 + '"></canvas>' ); // TODO - get image size
+
+        element = document.getElementById(canvasName);
+        c = element.getContext("2d");    
+    
+        im = ev.target; // the image, assumed to be 783x783 current negative map
+        
+        // read the width and height of the canvas
+        width = parseInt(element.getAttribute("width"));
+        height = parseInt(element.getAttribute("height"));
+    
+        // stamp the image on the left of the canvas:
+        c.drawImage(im, 0, 0);
+    
+        this.pixelData = c.getImageData(0, 0, width, height);//.data;
+        
+        /*
+        
+        // get all canvas pixel data
+        imageData = c.getImageData(0, 0, width, height);
+        var pix = imageData.data;
+    
+        var str = "";
+        
+        var i=0;
+        var len=pix.length;
+        
+        var arr=[];
+        
+        for( i; i<len; i+=4 ) {
+            arr.push( this.map[pix[i]] );
+            arr.push( this.map[pix[i+1]] );
+            arr.push( this.map[pix[i+2]] );
+        }
+            
+        this.data = arr.join("");
+        
+        */
+        
+        callback();
+    },
+
 
 
 // mappings for unwrapping
@@ -15,7 +81,7 @@ map :['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
     },
 
 
-    imageLoaded : function ( ev ) {
+    imageLoaded : function ( ev ) { // TODO - Look at drawing on intervals for large data sets
     
         element = document.getElementById("can");
         c = element.getContext("2d");
@@ -253,6 +319,9 @@ map :['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
         imageData.data[index+2] = b;
         imageData.data[index+3] = a;
     }
+
+
+
 
 
 }
