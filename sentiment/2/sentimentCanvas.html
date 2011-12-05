@@ -19,10 +19,10 @@
 	       var pos, neg;
 	       
 	       pos = new GTP.Loader();
-	       pos.loadData( "data/positive.png", "positive", function(){ sentiment.addToIndex( pos.pixelData, 'positive_map', 'pos' ) } );
+	       pos.loadAsImage( "data/positive.png", "positive", function(){ sentiment.addToIndex( pos.pixelData, 'pos' ) } );
 	       
 	       neg = new GTP.Loader()
-	       neg.loadData( "data/negative.png", "negative", function(){ sentiment.addToIndex( neg.pixelData, 'negative_map', 'neg' ) } );
+	       neg.loadAsImage( "data/negative.png", "negative", function(){ sentiment.addToIndex( neg.pixelData, 'neg' ) } );
 	       
 
 	       var intID = setInterval( callLater, 2000 ); // give above a couple of seconds // TODO - wire up of the neg call back
@@ -32,9 +32,7 @@
             {
                 clearInterval( intID );
             
-            
                // window.console.log( sentiment.tokenisedImageData );
-            
                 sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
                 
                 
@@ -43,10 +41,7 @@
                  
                 sentiment.createDataImage( "it was wonderful, marvelous great. loved every minute of it and would certainly go back again. i cant wait to tell all my friends one of the best movies i have ever seen.", 'query_map' ); /// this one returns wrong map as chars aren't encoded
                  
-                /// NOTE - this one returns wrong map as chars aren't 
-                //opinion.createDataImage( "I really didn't rate the film, i was quite excited but let down again", 'query_map' );encoded
-                 
-                 
+
                 var mydata = sentiment.getPixelData( 'query_map' ); // should i use callback first incase this is big?... dont think so.
                 var pix = mydata.data;
 
@@ -61,22 +56,12 @@
                 }
             
                 var str = rawData.join("");
-    
-    
-//                window.console.log(str);
 
-
-// FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
+                // FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
 
                 sentiment.createDataImage( str, 'actual_query_map' ); /// this one returns wrong map as chars aren't encoded
                 var finalQueryData = sentiment.getPixelData( 'query_map' );
                 var fpix = finalQueryData.data;
-
-//              classify();
-
-                window.console.log( "FPIX" );
-                window.console.log( fpix );
-
 
                 sentiment.classify( fpix );
 

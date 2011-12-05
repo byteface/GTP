@@ -1,217 +1,107 @@
 SentimentCanvas = {
         
-index : {},//[],
-classes : ['pos', 'neg'],
-classTokCounts : { pos:0, neg:0 },
-tokCount : 0,
-classDocCounts : { pos:0, neg:0 },
-docCount : 0,
-prior : { pos:0.5, neg:0.5 },
-
-
-
-getPixelData : function (canvasName)
-{
-
-
-        element = document.getElementById(canvasName);
-        c = element.getContext("2d");    
+    index:{},
+    classes : ['pos','neg'],
+    classTokCounts : { pos:0, neg:0 },
+    tokCount : 0,
+    classDocCounts : { pos:0, neg:0 },
+    docCount : 0,
+    prior : { pos:0.5, neg:0.5 },
     
-    /*
-        im = ev.target; // the image, assumed to be 783x783 current negative map
+    tokenisedImageData:null,
+    
+    addToIndex : function( canvasPixelArray, pclass ) //, limit ) TOOD - add limit back in
+    {
+        var pix = canvasPixelArray.data;
+
+        var i=0;
+        var len=pix.length;
+        var rawData=[];
         
-        // read the width and height of the canvas
-        width = parseInt(element.getAttribute("width"));
-        height = parseInt(element.getAttribute("height"));
+        for( i; i<len; i+=4 ) {
+            rawData.push( this.checkChar(  pix[i] ) );
+            rawData.push( this.checkChar(  pix[i+1] ) );
+            rawData.push( this.checkChar(  pix[i+2] ) );
+            // NOTE - not using alpha
+        }
     
-        // stamp the image on the left of the canvas:
-        c.drawImage(im, 0, 0);
-    */
-        return c.getImageData(0, 0, width, height);//.data;
+        var str = rawData.join("");
+        
+        var file = str.split("--244--");
+        
+        
+        // ----------------
 
-},
-
-
-
-
-
-
-
-
-
-
-
-//( pos.pixelData, 'positive_map', 'pos' );
-
-checkChar : function ( someChar )
-{
-    theCharacter="-"+someChar+"-";
-    
-    // TODO / clean up
-    
-     // HOPING OUR FAIL CHAR REPRESENTS NEW LINE
-    if(theCharacter=="-244-"){
-        theCharacter="--244--";
-    }
-    
-     // SPACES
-    if(theCharacter=="-255-"){
-        theCharacter="--255--";
-    }
-    
-    if(theCharacter=="-0-"){ // kill white space / pixels
-        theCharacter="";
-    }
-    
-    
-// fullstop needs to be split / hi-lited here. get the code
-//    if(theCharacter=="-0-"){
-//        theCharacter="";
-//    }    
-    
-    
-    return theCharacter;
-},
-
-
-
-addToIndex : function( data, canvasName, pclass ) //, limit ) TOOD - add limit back in
-{
-    
-    document.write('<canvas id="'+ canvasName +'" width="' + 300 + '", height="' + 300 + '"></canvas>' ); // TODO - get image size of output
-
-    outputCanvas = document.getElementById(canvasName);
-    outputContext = outputCanvas.getContext("2d");
-    
-    var pix = data.data;
-
-    window.console.log( "PIX PIX PIX" );
-    window.console.log( pix.length );
-    
-    var i=0;
-    var len=pix.length;
-    var rawData=[];
-    
-    for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-        rawData.push( this.checkChar(  pix[i] ) );
-        rawData.push( this.checkChar(  pix[i+1] ) );
-        rawData.push( this.checkChar(  pix[i+2] ) );
-    }
-
-    var str = rawData.join("");
-
-//    window.console.log( "OUTPUT OUTPUT OUTPUT OUTPUT OUTPUT OUTPUT" );
-//    window.console.log( str.split("--244--") );
-    
-    var file = str.split("--244--");
-    
-    
-    // ----------------
-    
-    
-    
-    
-    //file = fopen(file, 'r'); // open image
-    var i = 0;
-    
-    if(!this.contains( pclass, this.classes)) {
+        var i = 0;
+        
+        if(!this.contains( pclass, this.classes)) {
             window.console.log( "Invalid class specified. use pos or neg \n" );
             return;
-    }
+        }
+    
+        while( i<file.length ) // TODO - temporarily file is now an array of strings
+        {    
+    
+    //        if(limit > 0 && i > limit) { // TODO - add limit back in
+      //          break;
+        //    }
+          
+            var line = file[i];
+            i++;
+                    
+            this.docCount++;
+            this.classDocCounts[pclass]++;
+    
+            var tokens = this.tokenise(line);
 
-   // while($line = fgets(file)) { // next row of pixels so fgets moves to next white pixel     
-    while( i<file.length ) // TODO - temporarily file is now an array of strings
-    {    
-
-//        if(limit > 0 && i > limit) { // TODO - add limit back in
-  //          break;
-    //    }
-      
-        var line = file[i];
-        i++;
+            for( var j=0; j<tokens.length; j++ )
+            {
+                var token = tokens[j];
                 
-        this.docCount++;
-        this.classDocCounts[pclass]++;
-
-        var tokens = this.tokenise(line);
-        
-
-//                   window.console.log( tokens.length );
-                   
-        for( var j=0; j<tokens.length; j++ )
-        {
-            var token = tokens[j];
-            
-            if(!this.index[token])
-            {
-                this.index[token] = {};
-                this.index[token][pclass] = 0;
-            
-            }else
-            {
-                if(!this.index[token][pclass])
+                if(!this.index[token])
                 {
+                    this.index[token] = {};
                     this.index[token][pclass] = 0;
+                
+                }else
+                {
+                    if(!this.index[token][pclass])
+                    {
+                        this.index[token][pclass] = 0;
+                    }
+                }
+            
+                this.index[token][pclass]++;
+                this.classTokCounts[pclass]++;
+                this.tokCount++;
+                
+            }
+        }
+    
+
+
+        // ADDING THE WEIGHT DATA TO OUR IMAGE
+
+        var str = "";
+        
+        for( var items in this.index )
+        {
+            str += items.toString();
+            
+            for( var i=0; i<this.classes.length; i++ )
+            {
+                var classItem = this.classes[i];
+                if(this.index[items][classItem]){
+                    str+= classItem + "=" + this.index[items][classItem]; // ----------------------->>>>>> I add tokens to the image now so remove on classify
                 }
             }
-        
-            this.index[token][pclass]++;
-            this.classTokCounts[pclass]++;
-            this.tokCount++;
-            
-            
-
+            str+=" ";
         }
-    }
-
-   
-//    window.console.log( tokens[0] );
-//    window.console.log( this.index["--1----12----20----8----15----21----7----8--"] );
-   // window.console.log( this.index );
     
-
-
-    var str = "";
+        this.tokenisedImageData = str;
+    },
     
-    for( var bits in this.index )
-    {
-       // window.console.log(bits);
-        
-        str += bits.toString();
-        
-        for( var i=0; i<this.classes.length; i++ ){
-        
-        var classItem = this.classes[i];
-        
-        if(this.index[bits][classItem]){
-            str+= classItem + "=" + this.index[bits][classItem]; // ----------------------->>>>>> I add tokens to the image now so remove on classify
-        }
-        
-        
-          //  var classItem = this.classes[i];
-           // if(bits[classItem])
-           // {
-            //    str+= classItem + "=" + bits[classItem];
-            //}   
-        }
-        
-        str+=" ";
-    }
-
-    //window.console.log( str );
-    this.tokenisedImageData = str;
     
-   // this.createDataImage( str, outputContext );
-   
-},
-
-
-
-tokenisedImageData:null,
-
-
-
-
     createDataImage : function ( data, canvasName )
     {
         var contents = data;
@@ -222,12 +112,8 @@ tokenisedImageData:null,
 
         outputCanvas = document.getElementById(canvasName);
         outputContext = outputCanvas.getContext("2d");
-    
-        // read the width and height of the canvas
-        width = parseInt(element.getAttribute("width"));
-        height = parseInt(element.getAttribute("height"));
                 
-        imageData = outputContext.createImageData(width, height);
+        imageData = outputContext.createImageData(squared, squared);
 
         var xPos = 0;
         var yPos = 0;            
@@ -253,123 +139,94 @@ tokenisedImageData:null,
       
     },
 
-
-
-
         
-classify : function (document)
-{
-    this.prior.pos = this.classDocCounts.pos / this.docCount;
-    this.prior.neg = this.classDocCounts.neg / this.docCount; 
-    
-    
-    
-    var i=0;
-    var len=document.length;
-    var rawData=[];
-    
-    for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-        rawData.push( this.checkChar(  document[i] ) );
-        rawData.push( this.checkChar(  document[i+1] ) );
-        rawData.push( this.checkChar(  document[i+2] ) );
-    }
-
-    var str = rawData.join("");
-
-    window.console.log( "classifyclassifyclassifyclassifyclassifyclassifyclassify" );
-    window.console.log( str );
-    
-    var file = str.split("--244--").join("");
-    
-    
-    
-    
-    var tokens = this.tokenise(file);
-    var classScores = {};
-    
-    //window.console.log( "this.prior.pos::" + this.prior.pos );
-
-
-   // window.console.log( "this.classes" + this.classes );    
-    
-    for( var i=0; i<this.classes.length; i++ )
+    classify : function (document)
     {
-        var classItem = this.classes[i];
-        
-        window.console.log("classItem::" + classItem );
-        
-        classScores[classItem] = 1;
+        this.prior.pos = this.classDocCounts.pos / this.docCount;
+        this.prior.neg = this.classDocCounts.neg / this.docCount; 
 
-        for( var j=0; j<tokens.length; j++ )
+        var i=0;
+        var len=document.length;
+        var rawData=[];
+        
+        for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
+            rawData.push( this.checkChar( document[i] ) );
+            rawData.push( this.checkChar( document[i+1] ) );
+            rawData.push( this.checkChar( document[i+2] ) );
+        }
+    
+        var str = rawData.join("");
+    
+        var file = str.split("--244--").join("");
+        
+        // ----------    
+        
+        
+      //  window.console.log(this.index);
+
+        var tokens = this.tokenise(file);
+        var classScores = {};
+        
+        for( var i=0; i<this.classes.length; i++ )
         {
-            var token = tokens[j];
-        
-            var count=0;          
+            var classItem = this.classes[i];
             
-            if(this.index[token]) // TODO - not check index.. check the image
+            classScores[classItem] = 1;
+    
+            for( var j=0; j<tokens.length; j++ )
             {
-                if(this.index[token][classItem])
+                var token = tokens[j];
+            
+                var count=0;          
+                
+                if(this.index[token]) // TODO - not check index.. check the image as we have token data stored
                 {
-                    count = this.index[token][classItem];
-                    window.console.log(token);
-                    window.console.log(this.index[token]);
-                    window.console.log(this.index[token][classItem]);
+                    if(this.index[token][classItem])
+                    {
+                        count = this.index[token][classItem];
+                    }
+    
+                }else{
+                
+                   // window.console.log("NOT NOT NOT::" + token )
+                
                 }
-
-            }else{
-            
-               // window.console.log("NOT NOT NOT::" + token )
-            
+                
+                classScores[classItem] *= (count + 1) / (this.classTokCounts[classItem] + this.tokCount);
             }
             
-            window.console.log("count." + count );
-              
-            classScores[classItem] *= (count + 1) / (this.classTokCounts[classItem] + this.tokCount);
+            classScores[classItem] = this.prior[classItem] * classScores[classItem];
+                
         }
-        
-        classScores[classItem] = this.prior[classItem] * classScores[classItem];
-            
-    }
-
-
-    var result=0;
-    var resultProp;
-    for( var k=0; k<this.classes.length; k++ )
+    
+    
+        var result=0;
+        var resultProp;
+        for( var k=0; k<this.classes.length; k++ )
+        {
+           if( (classScores[this.classes[k]]) > result )
+           {
+                result = classScores[this.classes[k]]; // TODO - you may want the weighting
+                resultProp = this.classes[k];
+            }
+        }
+    
+        window.console.log( "RESULT" );
+        window.console.log( resultProp );    
+    
+        return resultProp;
+    },
+    
+    
+    tokenise : function (document)
     {
-    
-        window.console.log(classScores[this.classes[k]]);
-    
-       if( (classScores[this.classes[k]]) > result )
-       {
-            result = classScores[this.classes[k]]; // TODO - you may want the weighting
-            resultProp = this.classes[k];
-        }
-    }
-
-    window.console.log( "RESULT" );
-    window.console.log( resultProp );    
-
-
-
-    return resultProp;
-},
-
-
-tokenise : function (document)
-{
-
-    //window.console.log( "tokenisetokenisetokenisetokenisetokenisetokenisetokenise" );
-//    window.console.log( document );
-
-//    document = (document + '').toLowerCase(); // TODO - need to remove commas etc ..  document TODO - need to add lowercasing to words before loading
-    
-   // var matches = document.replace('/\w+/');//this.preg_match_all('/\w+/', document);
-     
-     
-    var matches = document.split( "--255--" );
+    //    document = (document + '').toLowerCase(); // TODO - need to remove commas etc ..  document TODO - need to add lowercasing to words before loading
         
-    return matches;//.split(" ");//matches[0];
-},
+       // var matches = document.replace('/\w+/');    
+        var matches = document.split( "--255--" );
+            
+        return matches;//.split(" ");//matches[0];
+    },
 
 
 
@@ -410,6 +267,47 @@ tokenise : function (document)
     },
 
 
+    getPixelData : function (canvasName)
+    {
+        canvas = document.getElementById(canvasName);
+        context = canvas.getContext("2d");    
+        
+        width = parseInt(canvas.getAttribute("width"));
+        height = parseInt(canvas.getAttribute("height"));
+
+        return context.getImageData(0, 0, width, height);//.data;
+    },
+    
+    
+    checkChar : function ( someChar )
+    {
+        theCharacter="-"+someChar+"-";
+        
+        // TODO / clean up
+        
+         // HOPING OUR FAIL CHAR REPRESENTS NEW LINE
+        if(theCharacter=="-244-"){
+            theCharacter="--244--";
+        }
+        
+         // SPACES
+        if(theCharacter=="-255-"){
+            theCharacter="--255--";
+        }
+        
+        if(theCharacter=="-0-"){ // kill white space / pixels
+            theCharacter="";
+        }
+        
+        
+    // fullstop needs to be split / hi-lited here. get the code
+    //    if(theCharacter=="-0-"){
+    //        theCharacter="";
+    //    }    
+        
+        
+        return theCharacter;
+    }
 
 
 }
