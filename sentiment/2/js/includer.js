@@ -4,6 +4,6 @@ var js_includer = function(path)
 }
 
 //js_includer("js/app/Sentiment.js");
-js_includer("js/app/SentimentImage.js");
+js_includer("js/app/SentimentCanvas.js");
 js_includer("js/app/Loader.js");
 js_includer("js/app/Map.js");

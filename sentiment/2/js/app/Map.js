@@ -1,7 +1,7 @@
 GTP.Map = function() {
 
 
-//	this.wrapS = wrapS !== undefined ? wrapS : THREE.ClampToEdgeWrapping;
+//	this.format = format !== undefined ? format : GTP.ENGLISH_WORDS;
 
 
 
@@ -20,6 +20,7 @@ GTP.Map.prototype = function() {
 
 
 // TODO -- lame of me to still have 2 arrays so look to merge these in global refactor
+// TODO -- also remmeber to change the php one if you change this one
 
 
 
@@ -138,71 +139,10 @@ GTP.encodeMap = {   'a' : 1,
 
 
 
+// Formats - TODO
 
-
-
-
-
-
-
-// Formats
-
-GTP.ENGLISH_WORDS = "en"; // TODO - create variety of language maps and make a factory
+GTP.ENGLISH_TXT = "en/txt"; // TODO - create variety of language maps and make a factory
 GTP.ENGLISH_HTML = "en/html";
-
-
-
-
-
-
-
-
-
-
-
-// Utilities
-
-
-
-/*
-
-    any char manipulation should stay here in the map so can keep an eye on data
-
-
-*/
-GTP.Map.checkChar = function( someChar )
-{
-    theCharacter="-"+someChar+"-";
-    
-    // TODO / clean up
-    
-     // HOPING OUR FAIL CHAR REPRESENTS NEW LINE
-    if(theCharacter=="-244-"){
-        theCharacter="--244--";
-    }
-    
-     // SPACES
-    if(theCharacter=="-255-"){
-        theCharacter="--255--";
-    }
-    
-    if(theCharacter=="-0-"){ // kill white space / pixels
-        theCharacter="";
-    }
-    
-    
-// fullstop needs to be split / hi-lited here. get the code
-//    if(theCharacter=="-0-"){
-//        theCharacter="";
-//    }    
-    
-    
-    
-    return theCharacter;
-}
-
-
-
 
 
 

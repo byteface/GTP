@@ -11,32 +11,30 @@
 	   <script type="text/javascript" src="js/includer.js"></script>
 	   
 	   <script>
-	   
-	       // load a positive opinion image
-	       var pos = new GTP.Loader();
-	       pos.loadData( "data/positive.png", "positive", onPositiveDataLoaded );
 	       
-	       var sentiment = SentimentImage;
-	       var neg;// = new GtpLoader.loader();
-	       
-	       function onPositiveDataLoaded(){
-	           
-	           sentiment.addToIndex( pos.pixelData, 'positive_map', 'pos' );
-	       
-	       	   neg = new GTP.Loader()
-	       	   neg.loadData( "data/negative.png", "negative", onNegativeDataLoaded );         
-	       }
+	       // init the sentiment obj which will tokenise and run queries
+	       var sentiment = SentimentCanvas;
 
-	       function onNegativeDataLoaded(){
-                      
-                sentiment.addToIndex( neg.pixelData, 'negative_map', 'neg' );
-                
-                showTokenisedImage();
-	       }
+	       // our two image loaders
+	       var pos, neg;
+	       
+	       pos = new GTP.Loader();
+	       pos.loadData( "data/positive.png", "positive", function(){ sentiment.addToIndex( pos.pixelData, 'positive_map', 'pos' ) } );
+	       
+	       neg = new GTP.Loader()
+	       neg.loadData( "data/negative.png", "negative", function(){ sentiment.addToIndex( neg.pixelData, 'negative_map', 'neg' ) } );
+	       
+
+	       var intID = setInterval( callLater, 2000 ); // give above a couple of seconds // TODO - wire up of the neg call back
 
 
-            function showTokenisedImage()
+            function callLater()
             {
+                clearInterval( intID );
+            
+            
+               // window.console.log( sentiment.tokenisedImageData );
+            
                 sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
                 
                 
@@ -57,9 +55,9 @@
                 var rawData=[];
                 
                 for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-                    rawData.push( GTP.Map.checkChar( pix[i] ) );
-                    rawData.push( GTP.Map.checkChar( pix[i+1] ) );
-                    rawData.push( GTP.Map.checkChar( pix[i+2] ) );
+                    rawData.push( SentimentCanvas.checkChar( pix[i] ) );
+                    rawData.push( SentimentCanvas.checkChar( pix[i+1] ) );
+                    rawData.push( SentimentCanvas.checkChar( pix[i+2] ) );
                 }
             
                 var str = rawData.join("");
@@ -81,7 +79,7 @@
 
 
                 sentiment.classify( fpix );
-                
+
             }
 
 		</script>

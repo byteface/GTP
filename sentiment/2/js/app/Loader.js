@@ -19,6 +19,10 @@ GTP.Loader.prototype = {
 
     drawImage : function ( ev, canvasName, callback ) {
         
+        
+                        // - TODO - dynamic width / height based on square size needed
+//        document.write('<canvas id="new" width="' + squared + '", height="' + squared + '"></canvas>' );
+        
         document.write('<canvas id="'+ canvasName +'" width="' + 452 + '", height="' + 452 + '"></canvas>' ); // TODO - get image size
 
         element = document.getElementById(canvasName);
