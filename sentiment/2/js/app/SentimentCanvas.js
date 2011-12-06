@@ -10,6 +10,14 @@ SentimentCanvas = {
     
     tokenisedImageData:null,
     
+    
+    /*
+    *
+
+    as this does tokenisation we need methods for adding maps that already have it as were
+    trying to get all operations onto the pixels.
+    
+    */
     addToIndex : function( canvasPixelArray, pclass ) //, limit ) TOOD - add limit back in
     {
         var pix = canvasPixelArray.data;
@@ -19,9 +27,9 @@ SentimentCanvas = {
         var rawData=[];
         
         for( i; i<len; i+=4 ) {
-            rawData.push( this.checkChar(  pix[i] ) );
-            rawData.push( this.checkChar(  pix[i+1] ) );
-            rawData.push( this.checkChar(  pix[i+2] ) );
+            rawData.push( this.checkChar( pix[i] ) );
+            rawData.push( this.checkChar( pix[i+1] ) );
+            rawData.push( this.checkChar( pix[i+2] ) );
             // NOTE - not using alpha
         }
     
@@ -80,7 +88,7 @@ SentimentCanvas = {
     
 
 
-        // ADDING THE WEIGHT DATA TO OUR IMAGE
+        // creates a tokensed image data map of all things in the index
 
         var str = "";
         
@@ -108,7 +116,7 @@ SentimentCanvas = {
         var contentsLength = contents.length;
         var squared = Math.ceil( Math.sqrt( contentsLength/3 ) ); // round up the square root and divide by 3 as were using 3 channels
         
-        document.write('<canvas id="'+ canvasName +'" width="' + squared + '", height="' + squared + '"></canvas>' ); // TODO - get image size of output
+        document.write('<canvas id="'+ canvasName +'" width="' + squared + '", height="' + squared + '"></canvas>' );
 
         outputCanvas = document.getElementById(canvasName);
         outputContext = outputCanvas.getContext("2d");
@@ -124,7 +132,6 @@ SentimentCanvas = {
             var char2 = contents.substr( charCount+1, 1);
             var char3 = contents.substr( charCount+2, 1);
             
-//            var selfRef = this;
             var col = this.setPixel( imageData, xPos, yPos, this.colorise( char1 ), this.colorise( char2 ), this.colorise( char3 ), 0xff );
             
             xPos++;
@@ -140,8 +147,34 @@ SentimentCanvas = {
     },
 
         
-    classify : function (document)
+    classify : function (query)
     {
+        this.createDataImage( query, 'query_map' ); // create normal pixel map
+        
+        var mydata = this.getPixelData( 'query_map' );
+        var pix = mydata.data;
+        
+        var i=0;
+        var len=pix.length;
+        var rawData=[];
+                
+        for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
+            rawData.push( this.checkChar( pix[i] ) );
+            rawData.push( this.checkChar( pix[i+1] ) );
+            rawData.push( this.checkChar( pix[i+2] ) );
+        }
+
+        var str = rawData.join("");
+
+        // FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
+
+        this.createDataImage( str, 'actual_query_map' );
+        var finalQueryData = this.getPixelData( 'query_map' );
+        var fpix = finalQueryData.data;
+
+        document = fpix;
+    
+    
         this.prior.pos = this.classDocCounts.pos / this.docCount;
         this.prior.neg = this.classDocCounts.neg / this.docCount; 
 

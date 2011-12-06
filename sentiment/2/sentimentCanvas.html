@@ -12,59 +12,31 @@
 	   
 	   <script>
 	       
-	       // init the sentiment obj which will tokenise and run queries
-	       var sentiment = SentimentCanvas;
-
-	       // our two image loaders
-	       var pos, neg;
-	       
-	       pos = new GTP.Loader();
-	       pos.loadAsImage( "data/positive.png", "positive", function(){ sentiment.addToIndex( pos.pixelData, 'pos' ) } );
-	       
-	       neg = new GTP.Loader()
-	       neg.loadAsImage( "data/negative.png", "negative", function(){ sentiment.addToIndex( neg.pixelData, 'neg' ) } );
-	       
-
-	       var intID = setInterval( callLater, 2000 ); // give above a couple of seconds // TODO - wire up of the neg call back
-
-
-            function callLater()
-            {
-                clearInterval( intID );
+            // init the sentiment obj which will tokenise and run queries
+            var sentiment = SentimentCanvas;
             
-               // window.console.log( sentiment.tokenisedImageData );
+            // create a positive sentiment map
+            var pos = new GTP.Loader();
+            pos.loadAsImage( "data/positive.png", "positive", function() { 
+                sentiment.addToIndex( pos.pixelData, 'pos' ) 
+            });
+            
+            // create a negative sentiment map
+            var neg = new GTP.Loader()
+            neg.loadAsImage( "data/negative.png", "negative", function() { 
+               sentiment.addToIndex( neg.pixelData, 'neg' )
+               query();
+            } );
+
+            // query our term against the maps to find out the sentiment
+            function query()
+            {
+                // window.console.log( sentiment.tokenisedImageData );
                 sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
                 
-                
-               // opinion.createDataImage( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment", 'query_map' ); /// this one returns wrong map as chars aren't encoded
+//                sentiment.classify( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment", 'query_map' );                 
                  
-                 
-                sentiment.createDataImage( "it was wonderful, marvelous great. loved every minute of it and would certainly go back again. i cant wait to tell all my friends one of the best movies i have ever seen.", 'query_map' ); /// this one returns wrong map as chars aren't encoded
-                 
-
-                var mydata = sentiment.getPixelData( 'query_map' ); // should i use callback first incase this is big?... dont think so.
-                var pix = mydata.data;
-
-                var i=0;
-                var len=pix.length;
-                var rawData=[];
-                
-                for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-                    rawData.push( SentimentCanvas.checkChar( pix[i] ) );
-                    rawData.push( SentimentCanvas.checkChar( pix[i+1] ) );
-                    rawData.push( SentimentCanvas.checkChar( pix[i+2] ) );
-                }
-            
-                var str = rawData.join("");
-
-                // FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
-
-                sentiment.createDataImage( str, 'actual_query_map' ); /// this one returns wrong map as chars aren't encoded
-                var finalQueryData = sentiment.getPixelData( 'query_map' );
-                var fpix = finalQueryData.data;
-
-                sentiment.classify( fpix );
-
+                sentiment.classify( "it was wonderful, marvelous great. loved every minute of it and would certainly go back again. i cant wait to tell all my friends one of the best movies i have ever seen.", 'query_map' );
             }
 
 		</script>
