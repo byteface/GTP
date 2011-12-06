@@ -107,6 +107,9 @@ SentimentCanvas = {
         }
     
         this.tokenisedImageData = str;
+        
+        
+       // window.console.log( this.tokenisedImageData );
     },
     
     
@@ -126,7 +129,7 @@ SentimentCanvas = {
         var xPos = 0;
         var yPos = 0;            
         
-        for( var charCount = 0; charCount < contentsLength; charCount+=4 )
+        for( var charCount = 0; charCount < contentsLength; charCount+=3 )
         {
             var char1 = contents.substr( charCount, 1);
             var char2 = contents.substr( charCount+1, 1);
@@ -168,6 +171,9 @@ SentimentCanvas = {
         var tokens = this.tokenise(str);
         var classScores = {};
         
+
+      //  window.console.log( this.tokenisedImageData );
+
         
         window.console.log( tokens );
         
@@ -191,6 +197,62 @@ SentimentCanvas = {
                 var token = tokens[j];
             
                 var count=0;          
+                
+                
+                this.createDataImage( tokens[j], tokens[j] );
+                var pixelQuery = this.getPixelData( tokens[j] );
+                
+//                window.console.log( "pixelQuery" );                
+                //window.console.log( pixelQuery );
+                
+                
+                
+           //     pixelQuery
+                
+                
+                // = str;
+                
+                
+                tokenMapData = this.getPixelData("tokenised_map");
+                
+
+                var l=0;
+                var tokLen=tokenMapData.data.length;
+
+                var pqlen = pixelQuery.data.length;
+                var found=false;
+
+                // window.console.log(pixelQuery);
+                
+                var m=0;
+                
+                for(l=0;l<tokLen;l++)
+                {                
+                
+
+                    for( m=0; m < pqlen; m++ ) // TODO 10 will be pix len but we need to strip the 0
+                    {
+                       if(m==0) cursor=l;
+                       if( pixelQuery.data[m] != tokenMapData.data[l+m] && pixelQuery.data[m] != 0 && pixelQuery.data[m] != 244)
+                       {
+                            l = cursor + 1;
+                            m = 0;
+                            break;
+                       }
+                       //window.console.log(m + " ::\t" + pixelQuery.data[m] + " != " + tokenMapData.data[l+m]);
+                    }
+
+                   // window.console.log("matched up to: " + m);
+                    if( m == pqlen  )
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+
+
+                window.console.log( "found:= " + found);
                 
                 //window.console.log(this.index["-3--8--5--5--11--25-"]);
                 
@@ -250,6 +312,7 @@ SentimentCanvas = {
         
         
     },
+    
     
     
     tokenise : function (document)
