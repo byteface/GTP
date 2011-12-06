@@ -149,56 +149,36 @@ SentimentCanvas = {
         
     classify : function (query)
     {
-        this.createDataImage( query, 'query_map' ); // create normal pixel map
-        
-        var mydata = this.getPixelData( 'query_map' );
-        var pix = mydata.data;
-        
+        var chars = query;
+
+        //wrap chars with dashes
         var i=0;
-        var len=pix.length;
-        var rawData=[];
-                
-        for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-            rawData.push( this.checkChar( pix[i] ) );
-            rawData.push( this.checkChar( pix[i+1] ) );
-            rawData.push( this.checkChar( pix[i+2] ) );
+        var len=chars.length;
+        var newData=[];
+        for( i; i<len; i++) {
+            newData.push( this.checkChar( this.colorise( chars[i] ) ) );
         }
-
-        var str = rawData.join("");
-
-        // FINALLY PASS OUR DATA INTO THE CLASSIFY FUNCTION THAT WILL GET US THE WEIGHTING
-
-        this.createDataImage( str, 'actual_query_map' );
-        var finalQueryData = this.getPixelData( 'query_map' );
-        var fpix = finalQueryData.data;
-
-        document = fpix;
-    
+        var str = newData.join("");
+        
+        //window.console.log(str)
     
         this.prior.pos = this.classDocCounts.pos / this.docCount;
         this.prior.neg = this.classDocCounts.neg / this.docCount; 
 
-        var i=0;
-        var len=document.length;
-        var rawData=[];
-        
-        for( i; i<len; i+=4 ) { // TODO - were doing this as we didn't use the alpha channel so need to remove that pixel data from our array
-            rawData.push( this.checkChar( document[i] ) );
-            rawData.push( this.checkChar( document[i+1] ) );
-            rawData.push( this.checkChar( document[i+2] ) );
-        }
-    
-        var str = rawData.join("");
-    
-        var file = str.split("--244--").join("");
-        
-        // ----------    
-        
-        
-      //  window.console.log(this.index);
-
-        var tokens = this.tokenise(file);
+        var tokens = this.tokenise(str);
         var classScores = {};
+        
+        
+        window.console.log( tokens );
+        
+        
+                /*
+        this.createDataImage( str, 'newQuery' );
+        var ourQuery = this.getPixelData( 'newQuery' );
+        var pixelQuery = ourQuery.data;
+        */
+        
+        
         
         for( var i=0; i<this.classes.length; i++ )
         {
@@ -211,6 +191,9 @@ SentimentCanvas = {
                 var token = tokens[j];
             
                 var count=0;          
+                
+                //window.console.log(this.index["-3--8--5--5--11--25-"]);
+                
                 
                 if(this.index[token]) // TODO - not check index.. check the image as we have token data stored
                 {
@@ -225,12 +208,27 @@ SentimentCanvas = {
                 
                 }
                 
+                
+//                window.console.log(count);
+                
+                
                 classScores[classItem] *= (count + 1) / (this.classTokCounts[classItem] + this.tokCount);
             }
             
             classScores[classItem] = this.prior[classItem] * classScores[classItem];
                 
         }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
         var result=0;
@@ -248,6 +246,9 @@ SentimentCanvas = {
         window.console.log( resultProp );    
     
         return resultProp;
+        
+        
+        
     },
     
     

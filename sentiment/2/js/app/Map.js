@@ -36,6 +36,10 @@ GTP.map =['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q'
         characters you want to encode / remember you will need to unwrap these so your unwrap array must derive from this
         
         */
+        
+        //14--1--18--18--1--20--9--15--14
+        //-3--8--5--5--11--25-
+        
 GTP.encodeMap = {   'a' : 1,
                         'b' : 2,
                         'c' : 3,

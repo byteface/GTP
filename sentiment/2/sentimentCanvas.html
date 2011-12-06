@@ -31,12 +31,12 @@
             // query our term against the maps to find out the sentiment
             function query()
             {
-                // window.console.log( sentiment.tokenisedImageData );
+//                window.console.log( sentiment.tokenisedImageData );
                 sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
                 
-//                sentiment.classify( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment", 'query_map' );                 
+                sentiment.classify( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment" );                 
                  
-                sentiment.classify( "it was wonderful, marvelous great. loved every minute of it and would certainly go back again. i cant wait to tell all my friends one of the best movies i have ever seen.", 'query_map' );
+                //sentiment.classify( "I loved it, maervelous wonderful great amazing top" );
             }
 
 		</script>
