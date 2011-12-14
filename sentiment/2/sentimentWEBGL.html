@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+
+
+
+
+	<body>
+
+
+
+    <canvas width="500" height="500" id="positive"></canvas>
+    <canvas width="500" height="500" id="negative"></canvas>
+    <canvas width="500" height="500" id="tokenised_map"></canvas>
+
+    <canvas width="500" height="500" id="mainCanvas"></canvas>
+    <canvas width="500" height="500" id="outputCanvas"></canvas>    
+
+
+
+    <script type="text/javascript" src="js/includerWEBGL.js"></script>
+
+
+
+
+
+
+		<script id="shader-vs" type="x-shader"> 
+		    attribute vec2 aVertexPosition;
+			
+		    void main() {
+		        gl_Position = vec4(aVertexPosition, 0.0, 1.0);
+		    }			
+		</script> 
+		
+		<script id="shader-fs" type="x-shader">
+			#ifdef GL_ES
+    		precision highp float;
+    		#endif
+			
+			uniform vec4 uColor;
+			
+			void main() {
+				gl_FragColor = uColor;
+		    }
+		</script>
+
+
+    
+    <script>
+    
+    
+        function main()
+        {
+        
+                // TODO - cannot use the above embedded canvases as need to change their size dynamically
+        
+        
+            // Configure the canvas to use WebGL
+            //
+            var gl;
+            var canvas = document.getElementById('mainCanvas');
+            try {
+                gl = canvas.getContext('experimental-webgl');
+            } catch (e) {
+                throw new Error('no WebGL found');
+            }
+            
+            if (gl)
+            {
+                gl.clearColor(0.0, 0.0, 1.0, 1.0);                      // Set clear color to black, fully opaque  
+                gl.enable(gl.DEPTH_TEST);                               // Enable depth testing  
+                gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things  
+                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.  
+            } 
+            
+            
+            
+            var glTest = SentimentWEBGL;
+            glTest.gl = gl;
+            
+            glTest.initShaders();
+           // glTest.drawRect( 100,100,100,100 );
+            
+                        
+            
+            
+            
+            
+        }
+    
+    
+    
+    
+	       
+            // init the sentiment obj which will tokenise and run queries
+            var sentiment = SentimentCanvas;
+            
+            // create a positive sentiment map
+            var pos = new GTP.Loader();
+            pos.loadAsImage( "data/positive.png", "positive", function() { 
+                sentiment.addToIndex( pos.pixelData, 'pos' ) 
+            });
+            
+            // create a negative sentiment map
+            var neg = new GTP.Loader()
+            neg.loadAsImage( "data/negative.png", "negative", function() { 
+               sentiment.addToIndex( neg.pixelData, 'neg' )
+               query();
+            } );
+
+            // query our term against the maps to find out the sentiment
+            function query()
+            {
+//                window.console.log( sentiment.tokenisedImageData );
+                sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
+                
+               // sentiment.classify( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment" );                 
+                 
+                //sentiment.classify( "I loved it, maervelous wonderful great amazing top" );
+                
+//                sentiment.classify( "bad awful hated negative never" );
+
+               // sentiment.classify( "brilliant phone; much better than my nokia x6;good camera; reasonable battery life; only needs charging every 2 days. very user friendly; love it." );
+//                temp = temp.replace(/[^a-zA-Z 0-9]+/g,'');
+
+
+
+
+                main();
+
+                
+            }
+            
+
+
+		</script>
+				
+	</body>
+</html>

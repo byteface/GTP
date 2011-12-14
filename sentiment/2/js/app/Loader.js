@@ -22,9 +22,12 @@ GTP.Loader.prototype = {
 
     drawImage : function ( ev, canvasName, callback ) {
 
+
         image = ev.target;
 
-        document.write('<canvas id="'+ canvasName +'" width="' + image.width + '", height="' + image.height + '"></canvas>' );
+       // document.write('<canvas id="'+ canvasName +'" width="' + image.width + '", height="' + image.height + '"></canvas>' );
+
+//        document.innerHTML = document.write('<canvas id="'+ canvasName +'" width="' + image.width + '", height="' + image.height + '"></canvas>' );
 
         canvas = document.getElementById(canvasName);
         context = canvas.getContext("2d");    

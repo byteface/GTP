@@ -119,7 +119,9 @@ SentimentCanvas = {
         var contentsLength = contents.length;
         var squared = Math.ceil( Math.sqrt( contentsLength/3 ) ); // round up the square root and divide by 3 as were using 3 channels
         
-        document.write('<canvas id="'+ canvasName +'" width="' + squared + '", height="' + squared + '"></canvas>' );
+        
+        // TODO - find replacement for this as its overwriting other things that are drawn
+       // document.write('<canvas id="'+ canvasName +'" width="' + squared + '", height="' + squared + '"></canvas>' );
 
         outputCanvas = document.getElementById(canvasName);
         outputContext = outputCanvas.getContext("2d");
@@ -250,6 +252,12 @@ SentimentCanvas = {
                     }
 
                 }
+
+
+
+
+                // ------------------->>>>>> TODO - so this class is not complete until were reading the class values (i.e. pos / neg) from the image. these would have been added during tokenisation
+
 
 
                 window.console.log( "found:= " + found);
