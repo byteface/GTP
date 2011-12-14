@@ -1,3 +1,10 @@
+// WEBGL TEXTURES MUST BE POWER OF 2
+// WEBGL TEXTURES MUST BE POWER OF 2
+// WEBGL TEXTURES MUST BE POWER OF 2
+// WEBGL TEXTURES MUST BE POWER OF 2
+// WEBGL TEXTURES MUST BE POWER OF 2
+
+
 SentimentWEBGL = {
 
         gl : null,
@@ -83,9 +90,9 @@ tokenisedMapRef : null,
             var myCanv = document.getElementById(tokenisedMapRef); // TODO - pass this in
             
            
-            this.texture.image.src = "data/negativeP12.png";//myCanv.toDataURL("image/png");//"image/jpeg";
+            //this.texture.image.src = "data/negativeP12.png";//myCanv.toDataURL("image/png");//"image/jpeg";
         
-           // this.texture.image.src = myCanv.toDataURL("image/png");//"image/jpeg";
+            this.texture.image.src = myCanv.toDataURL("image/png");//"image/jpeg";
             
             this.texture.image.ref = this;
             

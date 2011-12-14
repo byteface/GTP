@@ -16,46 +16,45 @@
 
     <canvas width="500" height="500" id="positive"></canvas>
     <canvas width="500" height="500" id="negative"></canvas>
-    <canvas width="500" height="500" id="tokenised_map"></canvas>
+    <canvas width="512" height="512" id="tokenised_map"></canvas>
 
-    <canvas width="500" height="500" id="mainCanvas"></canvas>
-    <canvas width="500" height="500" id="outputCanvas"></canvas>    
+    <canvas width="512" height="512" id="mainCanvas"></canvas>
+    <canvas width="512" height="512" id="outputCanvas"></canvas>    
 
 
 
     <script type="text/javascript" src="js/includerWEBGL.js"></script>
 
-<script id="shader-fs" type="x-shader/x-fragment">
-    precision mediump float;
-
-    varying vec2 vTextureCoord;
-
-    uniform sampler2D uSampler;
-
-    void main(void) {
-        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    }
-</script>
-
-<script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
-
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-
-    varying vec2 vTextureCoord;
-
-
-    void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vTextureCoord = aTextureCoord;
-    }
-</script>
-
-    <script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+        precision mediump float;
+    
+        varying vec2 vTextureCoord;
+    
+        uniform sampler2D uSampler;
+    
+        void main(void) {
+            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        }
+    </script>
+    
+    <script id="shader-vs" type="x-shader/x-vertex">
+        attribute vec3 aVertexPosition;
+        attribute vec2 aTextureCoord;
+    
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+    
+        varying vec2 vTextureCoord;
     
     
+        void main(void) {
+            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+            vTextureCoord = aTextureCoord;
+        }
+    </script>
+
+
+    <script>    
 
         function main()
         {
@@ -81,8 +80,8 @@
                 gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
                 
                 
-                gl.viewportWidth = 500;//canvas.width;
-                gl.viewportHeight = 500;// canvas.height;
+                gl.viewportWidth = 512;//canvas.width;
+                gl.viewportHeight = 512;// canvas.height;
                 
                 
             } 
