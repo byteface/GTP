@@ -1,7 +1,11 @@
 SentimentWEBGL = {
 
+/*
 
-        /*
+TODO
+would prefer dynamic frag/vertex shaders but getting this err when swapping out. for now they are static in the html page.
+Uncaught compile error: ERROR: 0:1: '' : preprocessor command must not be preceded by any other statement in that line 
+        
 
         // vertex shader
         defaultVertexSource : '\
@@ -24,16 +28,6 @@ SentimentWEBGL = {
         }',
         
         */
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         // compiles a custom shader
@@ -59,8 +53,7 @@ SentimentWEBGL = {
 
 
 
-// the static ones
-
+            // the static ones
             var fragmentShader = this.getShaderSource("shader-fs");
             var vertexShader = this.getShaderSource("shader-vs");
 
@@ -118,11 +111,6 @@ SentimentWEBGL = {
             itemSize = 2;
             numItems = vertices.length / itemSize; 
             
-            
-            
-            
-            
-            
             gl.useProgram(shaderProgram);
             
             shaderProgram.uColor = gl.getUniformLocation( shaderProgram, "uColor");
@@ -134,19 +122,15 @@ SentimentWEBGL = {
             
             
             gl.drawArrays(gl.TRIANGLES, 0, numItems);
-          
         },
+
 
         // for getting static shaders that are prefixed in script tags
         getShaderSource : function (id)
-        {
-            window.console.log("Jebs");
-                    
+        {        
             var script = document.getElementById(id);
             if (!script) { return null; }
             
-            window.console.log("dribblethwait");
-        
             var source = "";
             var child = script.firstChild;
             while (child) {
@@ -163,7 +147,7 @@ SentimentWEBGL = {
         gl:null,
 
 
-// taken from gitFX - write up on this...
+        // taken from gitFX - write up on this...
         drawRect : function(left, top, right, bottom) {
             var undefined;
             var viewport = this.gl.getParameter(this.gl.VIEWPORT);
