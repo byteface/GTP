@@ -25,36 +25,38 @@
 
     <script type="text/javascript" src="js/includerWEBGL.js"></script>
 
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec2 vTextureCoord;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    }
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    varying vec2 vTextureCoord;
 
 
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;
+    }
+</script>
 
-
-
-		<script id="shader-vs" type="x-shader"> 
-		    attribute vec2 aVertexPosition;
-			
-		    void main() {
-		        gl_Position = vec4(aVertexPosition, 0.0, 1.0);
-		    }			
-		</script> 
-		
-		<script id="shader-fs" type="x-shader">
-			#ifdef GL_ES
-    		precision highp float;
-    		#endif
-			
-			uniform vec4 uColor;
-			
-			void main() {
-				gl_FragColor = uColor;
-		    }
-		</script>
-
-
-    
     <script>
     
     
+
         function main()
         {
         
@@ -73,25 +75,24 @@
             
             if (gl)
             {
-                gl.clearColor(0.0, 0.0, 1.0, 1.0);                      // Set clear color to black, fully opaque  
+                gl.clearColor(0.0, 0.0, 1.0, 1.0);                      // Set clear color to blue, fully opaque  
                 gl.enable(gl.DEPTH_TEST);                               // Enable depth testing  
                 gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things  
-                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.  
+                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
+                
+                
+                gl.viewportWidth = 500;//canvas.width;
+                gl.viewportHeight = 500;// canvas.height;
+                
+                
             } 
             
             
             
             var glTest = SentimentWEBGL;
             glTest.gl = gl;
-            
-            glTest.initShaders();
-           // glTest.drawRect( 100,100,100,100 );
-            
-                        
-            
-            
-            
-            
+            glTest.run( 'tokenised_map' ); // pass in the tokenised map
+
         }
     
     
