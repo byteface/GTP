@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+
+	   <script type="text/javascript" src="js/includerCanvas.js"></script>
+	   
+	   <script>
+	       
+            // init the sentiment obj which will tokenise and run queries
+            var sentiment = SentimentCanvas;
+            
+            // create a positive sentiment map
+            var pos = new GTP.Loader();
+            pos.loadAsImage( "data/positive.png", "positive", function() { 
+                sentiment.addToIndex( pos.pixelData, 'pos' ) 
+            });
+            
+            // create a negative sentiment map
+            var neg = new GTP.Loader()
+            neg.loadAsImage( "data/negative.png", "negative", function() { 
+               sentiment.addToIndex( neg.pixelData, 'neg' )
+               query();
+            } );
+
+            // query our term against the maps to find out the sentiment
+            function query()
+            {
+//                window.console.log( sentiment.tokenisedImageData );
+                sentiment.createDataImage( sentiment.tokenisedImageData, 'tokenised_map' );
+                
+               // sentiment.classify( "i really didn't like it, suffered with bleeding ears. So droll i nearly found myself in a coma. abysmal and really just a big dissapointment" );                 
+                 
+                //sentiment.classify( "I loved it, maervelous wonderful great amazing top" );
+                
+//                sentiment.classify( "bad awful hated negative never" );
+
+                sentiment.classify( "brilliant phone; much better than my nokia x6;good camera; reasonable battery life; only needs charging every 2 days. very user friendly; love it." );
+//                temp = temp.replace(/[^a-zA-Z 0-9]+/g,'');
+                
+            }
+
+		</script>
+				
+	</body>
+</html>

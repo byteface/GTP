@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>sentiment test</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+	   
+	   <script type="text/javascript" src="js/app/Sentiment.js"></script>
+	   
+	   <script>
+	   
+	       // TODO - test loading all data as text and passing in so we can run speed comparisons later when the GPU stuff is ready
+	       // small tests
+	       var negativeData = [ "i thought it was awful",  "a complete load of rubish", "terrible, i hated it", "wouldn't reccomend" ];
+	       var positiveData = [ "it was awesome", "so good it made laugh I really enjoyed it", "i loved it", "it was brilliant" ];
+	       
+	       var sentiment = Sentiment;
+	       sentiment.addToIndex( negativeData, 'neg' );
+	       sentiment.addToIndex( positiveData, 'pos' );
+	       
+	       var  myString = "I hated it awful, terrible, hated";
+	       
+	       window.console.log( "Classifying string - " );
+	       window.console.log( sentiment.classify(myString) );	       
+	       
+	       //  myString = "It was great I loved it, so brilliant";
+	       // window.console.log( "Classifying string - " + opinion.classify(myString) );
+		
+		</script>
+				
+	</body>
+</html>

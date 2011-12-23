@@ -134,7 +134,7 @@ SentimentWEBGL = {
 
     animate : function () {
     
-    window.console.log("asdf");
+    //window.console.log("asdf");
     
         var timeNow = new Date().getTime();
         if (this.lastTime != 0) {
