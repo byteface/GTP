@@ -34,22 +34,19 @@ SentimentWEBGL = {
 
     createGLDataImage : function ( indexData )
     {
-    
-    
-    
         this.mvMatrix = mat4.create(),
         this.mvMatrixStack = [];
         this.pMatrix = mat4.create();
     
-    
-            this.initShaders();
-    
+        this.initShaders();
         
-        this.createVectors( indexData ); // or vertex buffers you mean // TODO
-            // createTexture for that vector
-        this.createTexture( indexData );
+        this.createVertexBuffers( indexData ); // create our shapes
+
+      //  window.console.log( this.vertices );
         
-    window.console.log( this.textures );
+        this.createTexture( indexData ); // create our textures
+        
+        //window.console.log( this.textures );
     
     
     /*
@@ -93,7 +90,7 @@ vertices:null,
 textureCoords:null,
 
 // TODO - so gonna force some sqaures per word.. should look at smaller shapes.
-    createVectors : function ( indexData ) {
+    createVertexBuffers : function ( indexData ) {
     
         this.vertices=[];
         this.textureCoords=[];
@@ -104,19 +101,27 @@ textureCoords:null,
             1, -1, 0.0,
             -1, 1, 0.0,
             1, 1, 0.0 ];
-            
-            
+                 
         var textureCoord = [
             0.0, 0.0,
             1.0, 0.0,
             0.0, 1.0,
             1.0, 1.0 ];
         
-        for( var items in indexData ) // create a vertex for each word
-        {
-            this.vertices.concat(vertex);
-            this.textureCoords.concat(textureCoord);   
-        }
+        
+        
+        //for( var items in indexData ) // create a vertex for each word
+        //{
+           // window.console.log("flaps");
+          // this.vertices = this.vertices.concat(vertex);
+        
+           
+           
+  //         this.textureCoords = this.textureCoords.concat(textureCoord);   
+        //}
+        
+//        window.console.log( this.vertices );
+        
         
     //        var str = "";
       //      str += items.toString();
