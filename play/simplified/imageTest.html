@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+
+
+    <canvas width="256" height="256" id="positive"></canvas>
+    <canvas width="256" height="256" id="mainCanvas"></canvas>
+    <canvas width="256" height="256" id="outputCanvas"></canvas>    
+
+
+
+    <script type="text/javascript" src="js/includer.js"></script>
+
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+        precision mediump float;
+    
+        varying vec2 vTextureCoord;
+    
+        uniform sampler2D uSampler;
+    
+        void main(void) {
+           
+           vec4 col = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+
+           vec4 whiteOut = vec4( 1, 1, 1, 1.0 ); // create a whiteout for pixels that dont match
+
+// simplistic is the first word we stored in the data file, so the first run of pixels will be that word
+
+            // shows all the 'and' words that start from the red color channel
+//            if( (col[0] != (1./255.)) ){                         
+  //              if( (col[1] != (14./255.)) ){                         
+    //                if( (col[2] != (4./255.)) ){                         
+      //          col = mix( col, whiteOut, 1.0 );
+        //    }}}
+        
+        
+            if( (col[0] != (20./255.)) ){
+                if( (col[1] != (8./255.)) ){                         
+                    if( (col[2] != (5./255.)) ){                         
+                col = mix( col, whiteOut, 1.0 );
+            }}}        
+    
+
+            gl_FragColor = col;
+            
+        }
+    </script>
+    
+    <script id="shader-vs" type="x-shader/x-vertex">
+        attribute vec3 aVertexPosition;
+        attribute vec2 aTextureCoord;
+    
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+    
+        varying vec2 vTextureCoord;
+    
+    
+        void main(void) {
+            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+            vTextureCoord = aTextureCoord;
+        }
+    </script>
+
+    <script>    
+
+
+        // load in some image data
+        var pos = new GTP.Loader();
+        pos.loadAsImage( "data/random.png", "positive", function() { 
+            main();
+        });
+
+        function main()
+        {
+            var gl;
+            var canvas = document.getElementById('mainCanvas');
+            try {
+                gl = canvas.getContext('experimental-webgl');
+            } catch (e) {
+                throw new Error('no WebGL found');
+            }
+            
+            if (gl)
+            {
+                gl.clearColor(0.0, 0.0, 1.0, 1.0);                      // Set clear color to blue, fully opaque  
+                gl.enable(gl.DEPTH_TEST);                               // Enable depth testing  
+                gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things  
+                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
+                
+                gl.viewportWidth = 256;
+                gl.viewportHeight = 256;
+            } 
+            
+            var glTest = WEBGL;
+            glTest.gl = gl;
+            glTest.run( 'positive' );
+
+        }
+
+
+		</script>
+				
+	</body>
+</html>
