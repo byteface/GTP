@@ -34,7 +34,99 @@
         uniform sampler2D uSampler;
     
         void main(void) {
-            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+            
+            // gl_FragColor = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+            // gl_FragColor = vec4( 1.0, 1.0 );
+           
+           vec4 col = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+               
+           // So here im checking the color I believe of the first pixel and if its black
+           // then setting a green overcast on it. If this is what I'm managing then it's 
+           // great news.
+           
+           // few things would be useful to research and thats tracing some kind of logs from 
+           // the shader if thats possible
+           
+           vec4 whiteOut = vec4( 1, 1, 1, 1.0 ); // mixed with a green shade to match the texture
+           
+           // WE WOULD PUSH OUR QUERY TEXTURE IN, IF NOT A MATCH TURN BLACK
+        
+            //if(col[0] == 1.0 || col[1] == 1.0 || col[2] == 1.0 || col[3] == 1.0 ){
+             //   col = mix(col, neon, 0.8);
+            //}
+            
+            // letter A?
+            
+            // OUR TOKENISED MAP HOLDS NUMBERS
+
+/*
+            if( (col[0] == (53./255.)) ){ 
+                col = mix( col, whiteOut, 1.0 );
+            }
+            if( (col[1] == (86./255.)) ){ 
+                col = mix( col, whiteOut, 1.0 );
+            }
+            if( (col[2] == (53./255.)) ){ 
+                col = mix( col, whiteOut, 1.0 );
+            }
+            if( (col[3] == (53./255.)) ){ 
+                col = mix( col, whiteOut, 1.0 );
+            }
+            */
+            
+            
+            if( (col[0] == (54./255.)) ){ 
+                if( (col[1] == (57./255.)) ){ 
+                    if( (col[1] == (57./255.)) ){
+                                    col = mix( col, whiteOut, 1.0 );
+                                    }
+                                    }
+                                    }
+                                    
+            if( (col[0] == (57./255.)) ){ 
+                if( (col[1] == (57./255.)) ){ 
+                                    col = mix( col, whiteOut, 1.0 );
+                                    }
+                                    }  
+                                    
+            if( (col[0] == (54./255.)) ){ 
+                if( (col[1] == (57./255.)) ){ 
+                                    col = mix( col, whiteOut, 1.0 );
+                                    }
+                                    }                                                                        
+                    
+            
+            
+            
+  
+            
+            
+            
+            // TODO - should be reading from one and writing to another really.
+            
+                                     
+            
+            
+            
+//            if( (col[1] == (86./255.)) ){ 
+ //               col = mix( col, whiteOut, 1.0 );
+  //          }
+   //         if( (col[2] == (86./255.)) ){ 
+    //            col = mix( col, whiteOut, 1.0 );
+     //       }
+      //      if( (col[3] == (86./255.)) ){ 
+       //         col = mix( col, whiteOut, 1.0 );
+        //    }
+                           
+            
+            
+//            if( (col[3] == (86./255.)) ){ 
+//                col = mix( col, whiteOut, 1.0 );
+//            }         
+            
+
+            gl_FragColor = col;
+            
         }
     </script>
     

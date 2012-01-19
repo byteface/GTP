@@ -33,7 +33,7 @@ GTP.Loader.prototype = {
         context = canvas.getContext("2d");    
     
         // stamp the image on the left of the canvas:
-        context.drawImage(image, 0, 0);
+        context.putImageData( imageData, 0, 0 );
     
         this.pixelData = context.getImageData(0, 0, image.width, image.height);//.data;
         

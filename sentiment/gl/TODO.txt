@@ -1,5 +1,0 @@
-so proposing 2 attempts at this given my limited understanding I want to try a couple of approaches.
-
-One using vectors per word and pattern matching based on each vector, potentially pairing vectors for data storage. Output would be row of pixels you would unwrap using GTP rules you set up.
-
-The other some special kind of shader maybe that can run across entire image map and return math. This answer would be drawn to a new texture. so an output texture maybe with a single pixel?.. or row of pixels
