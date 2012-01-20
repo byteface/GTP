@@ -134,7 +134,7 @@ WEBGL = {
 
     animate : function () {
     
-    //window.console.log("asdf");
+    window.console.log("asdf");
     
         var timeNow = new Date().getTime();
         if (this.lastTime != 0) {
@@ -174,21 +174,22 @@ WEBGL = {
     cubeVertexTextureCoordBuffer.itemSize = 2;
     cubeVertexTextureCoordBuffer.numItems = 4;
     },
-    
+       
     
     drawScene : function () {
         this.gl.viewport(0, 0, this.gl.viewportWidth, this.gl.viewportHeight);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        
+        
+      // var mvMatrix = mat4.create();
         
         // No transformations
         mat4.identity(this.pMatrix);
         // No transformations
         mat4.identity(this.mvMatrix);
         
-        //mat4.translate(this.mvMatrix, [0.1, 0.0, 1]);
+       // mat4.translate(mvMatrix, [1.1, 3.0, 1]);
         
-        // No animation
-        //mat4.rotate(mvMatrix, degToRad(zRot), [0, 0, 1]);
         
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
         this.gl.vertexAttribPointer(this.program.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);

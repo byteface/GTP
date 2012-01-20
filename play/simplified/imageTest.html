@@ -19,6 +19,7 @@
 
 
     <script id="shader-fs" type="x-shader/x-fragment">
+    
         precision mediump float;
     
         varying vec2 vTextureCoord;
@@ -26,14 +27,29 @@
         uniform sampler2D uSampler;
     
         void main(void) {
-           
+        
             vec4 col = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
     
     
-    // finds all the word 'the' in the document
-            if( (col[0] != (20./255.)) && (col[1] != (8./255.)) &&  (col[2] != (5./255.)) ){
+    //col += texture2D(uSampler, vTextureCoord );
+    
+    
+            // finds all the word 'the' in the document
+        //    if( (col[0] != (20./255.)) && (col[1] != (8./255.)) && (col[2] != (5./255.)) ){
+          //      col += vec4( 1, 1, 1, 1.0 );
+            //}
+            
+            
+            /*
+            vec4 col = texture2D( uSampler, vec2(vTextureCoord.s+1.0, vTextureCoord.t));
+    
+            // finds all the word 'the' in the document
+            if( (col[0] != (20./255.)) && (col[1] != (8./255.)) && (col[2] != (5./255.)) ){
                 col += vec4( 1, 1, 1, 1.0 );
-            }
+            }            
+            
+            */
+            
 
             gl_FragColor = col;
             
@@ -41,19 +57,27 @@
     </script>
     
     <script id="shader-vs" type="x-shader/x-vertex">
+    
         attribute vec3 aVertexPosition;
         attribute vec2 aTextureCoord;
     
-        uniform mat4 uMVMatrix;
-        uniform mat4 uPMatrix;
+    //    uniform mat4 uMVMatrix;
+      //  uniform mat4 uPMatrix;
     
         varying vec2 vTextureCoord;
     
     
         void main(void) {
-            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-            vTextureCoord = aTextureCoord;
+            gl_Position = /*uPMatrix * uMVMatrix * */vec4(aVertexPosition, 1.0);
+
+
+//            vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool
+            
+            vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool            
+            
+            
         }
+        
     </script>
 
     <script>    
