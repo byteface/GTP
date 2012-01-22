@@ -164,10 +164,28 @@
                     var y = e.pageY - position.y;
                     var coordinate = "x=" + x + ", y=" + y;
                     var canvas = this.getContext('2d');
-                    var p = canvas.getImageData(x, y, 1, 1).data;
+                    var p = canvas.getImageData(x, y, 100, 1).data;
                     
-                    alert( p[0] +"|"+ p[1] +"|"+ p[2] +"=="+ GTP.map[p[0]] +""+ GTP.map[p[1]] +""+ GTP.map[p[2]] );
+              //      alert( p[0] +"|"+ p[1] +"|"+ p[2] +"=="+ GTP.map[p[0]] +""+ GTP.map[p[1]] +""+ GTP.map[p[2]] );
+                    var i=0;
+                    var len=p.length;
                     
+                    var arr=[];
+                    
+                    for( i; i<len; i+=4 ) {
+                        arr.push( GTP.map[p[i]] );
+                        arr.push( GTP.map[p[i+1]] );
+                        arr.push( GTP.map[p[i+2]] );
+                //        str += map[pix[i+3]]+"";                        
+                    }
+                        
+                   // document.write( arr.join("") );
+                    
+                    alert( arr.join("") );
+                                         
+
+
+
                     
                     
         	     //  var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
