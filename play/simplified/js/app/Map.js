@@ -141,10 +141,16 @@ GTP.encodeMap = {   'a' : 1,
 
 
 // TODO - map and unrwap methods
+GTP.encodeString = function() // array
+{
+    
+}
 
 
-
-
+GTP.decodeString = function() // array
+{
+    
+}
 
 
 

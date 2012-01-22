@@ -31,7 +31,7 @@
         void main(void) {
         
             // TODO - image size as var
-            vec2 onePixel = vec2(1.0, 1.0) / vec2(256.0,256.0); 
+            vec2 onePixel = vec2(1.0, 1.0) / vec2(512.0,512.0);  // NOTICE IMAGE SIZE
         
         
 
@@ -45,16 +45,16 @@
         	float b = rgb.b;
 
 
-            // rgb of the next pixel
-         //   vec3 rgb2 = texture2D( uSampler, vTextureCoord + vec2(onePixel.x, 0.0) ).rgb;
-
-           // float npr = rgb2.r;
-//        	float npg = rgb2.g;
-  //      	float npb = rgb2.b;
-
+            // TESTING including rgb of the next pixel
+            vec3 rgb2 = texture2D( uSampler, vTextureCoord + vec2(onePixel.x, 0.0) ).rgb;
+            float npr = rgb2.r;
+            float npg = rgb2.g;
+            float npb = rgb2.b;
 
 
-            if( (r==(20./255.)) && (g==(8./255.)) && (b==(1./255.)) )
+// gonna look for word 'plenty'
+
+            if( (r==(16./255.)) && (g==(12./255.)) && (b==(5./255.))  && (npr==(14./255.)) && (npg==(20./255.)) && (npb ==(25./255.))    )
             {
                // col = vec4( 1.0, 1.0, 1.0, 1.0 );
             }
