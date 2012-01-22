@@ -16,6 +16,8 @@
 
 
     <script type="text/javascript" src="js/includer.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>    
+
 
 
     <script id="shader-fs" type="x-shader/x-fragment">
@@ -28,17 +30,47 @@
     
         void main(void) {
         
-            vec4 col = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    
-    
-    //col += texture2D(uSampler, vTextureCoord );
-    
-    
-            // finds all the word 'the' in the document
-        //    if( (col[0] != (20./255.)) && (col[1] != (8./255.)) && (col[2] != (5./255.)) ){
-          //      col += vec4( 1, 1, 1, 1.0 );
-            //}
+            // TODO - image size as var
+            vec2 onePixel = vec2(1.0, 1.0) / vec2(256.0,256.0); 
+        
+        
+
+            vec4 col = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ));
+
+
+            vec3 rgb = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ) ).rgb;
             
+            float r = rgb.r;
+        	float g = rgb.g;
+        	float b = rgb.b;
+
+
+            // rgb of the next pixel
+         //   vec3 rgb2 = texture2D( uSampler, vTextureCoord + vec2(onePixel.x, 0.0) ).rgb;
+
+           // float npr = rgb2.r;
+//        	float npg = rgb2.g;
+  //      	float npb = rgb2.b;
+
+
+
+            if( (r==(20./255.)) && (g==(8./255.))  )
+            {
+               // col = vec4( 1.0, 1.0, 1.0, 1.0 );
+            }
+            else
+            {
+                col = vec4( 1.0, 0.0, 0.0, 1.0 );
+            }
+
+
+
+
+
+
+
+
+           // vec4 col = texture2D( uSampler, vTextureCoord * vec2(-0.1,-0.1) ); // can zoom in on words or sentences would require changing the read size
             
             /*
             vec4 col = texture2D( uSampler, vec2(vTextureCoord.s+1.0, vTextureCoord.t));
@@ -72,8 +104,9 @@
 
 
 //            vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool
+
             
-            vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool            
+            vTextureCoord = aTextureCoord;// * vec2(1.0,1.0);
             
             
         }
@@ -113,9 +146,64 @@
             var glTest = WEBGL;
             glTest.gl = gl;
             glTest.run( 'positive' );
+            
+            
+            
+            
+            
+            
+            
+            // for tracing the value
+                jQuery('#positive').click(function(e){ // TODO - need to do one of these for GL.. seems to work fine for canvas though
+                    var position = findPos(this);
+                    var x = e.pageX - position.x;
+                    var y = e.pageY - position.y;
+                    var coordinate = "x=" + x + ", y=" + y;
+                    var canvas = this.getContext('2d');
+                    var p = canvas.getImageData(x, y, 1, 1).data;
+                    
+                    alert( p[0] +"|"+ p[1] +"|"+ p[2] +"=="+ GTP.map[p[0]] +""+ GTP.map[p[1]] +""+ GTP.map[p[2]] );
+                    
+                    
+                    
+        	     //  var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+//        alert("HEX: " + hex);
+    });
+
 
         }
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+            // some debug utils
+        
+        
+            function findPos(obj){
+                var current_left = 0, current_top = 0;
+                if (obj.offsetParent){
+                do{
+                    current_left += obj.offsetLeft;
+                    current_top += obj.offsetTop;
+                }while(obj = obj.offsetParent);
+                return {x: current_left, y: current_top};
+                }
+                return undefined;
+            }
+    
+            function rgbToHex(r, g, b){
+                if (r > 255 || g > 255 || b > 255)
+                    throw "Invalid color component";
+                return ((r << 16) | (g << 8) | b).toString(16);
+            }
+    
+  
 
 		</script>
 				

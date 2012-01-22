@@ -140,6 +140,12 @@ GTP.encodeMap = {   'a' : 1,
 
 
 
+// TODO - map and unrwap methods
+
+
+
+
+
 
 
 
