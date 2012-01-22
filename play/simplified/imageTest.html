@@ -11,7 +11,7 @@
 
     <canvas width="512" height="512" id="positive"></canvas>
     <canvas width="512" height="512" id="mainCanvas"></canvas>
-    <canvas width="512" height="512" id="outputCanvas"></canvas>    
+<!--    <canvas width="512" height="512" id="outputCanvas"></canvas>    -->
 
 
 
@@ -54,7 +54,7 @@
 
 // gonna look for word 'plenty'
 
-            if( (r==(16./255.)) && (g==(12./255.)) && (b==(5./255.))  && (npr==(14./255.)) && (npg==(20./255.)) && (npb ==(25./255.))    )
+            if( (r==(16./255.)) && (g==(12./255.)) && (b==(5./255.)) && (npr==(14./255.)) && (npg==(20./255.)) && (npb ==(25./255.))    )
             {
                // col = vec4( 1.0, 1.0, 1.0, 1.0 );
             }
@@ -158,13 +158,13 @@
             
             
             // for tracing the value
-                jQuery('#positive').click(function(e){ // TODO - need to do one of these for GL.. seems to work fine for canvas though
+                jQuery('#positive').mousemove(function(e){ // TODO - need to do one of these for GL.. seems to work fine for canvas though
                     var position = findPos(this);
                     var x = e.pageX - position.x;
                     var y = e.pageY - position.y;
                     var coordinate = "x=" + x + ", y=" + y;
                     var canvas = this.getContext('2d');
-                    var p = canvas.getImageData(x, y, 100, 1).data;
+                    var p = canvas.getImageData(x, y, 1000, 1).data;
                     
               //      alert( p[0] +"|"+ p[1] +"|"+ p[2] +"=="+ GTP.map[p[0]] +""+ GTP.map[p[1]] +""+ GTP.map[p[2]] );
                     var i=0;
@@ -181,8 +181,12 @@
                         
                    // document.write( arr.join("") );
                     
-                    alert( arr.join("") );
+//                    alert( arr.join("") );
                                          
+
+
+                    $("p").text(arr.join(""));
+
 
 
 
@@ -228,6 +232,9 @@
   
 
 		</script>
+		
+		
+    <p></p>
 				
 	</body>
 </html>
