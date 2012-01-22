@@ -107,7 +107,17 @@ class GenerateImage {
         
             $contents = file_get_contents( $file, 'r' ); // get content as string
             $contentsLength = mb_strlen($contents); // check length
-            $squared = ceil( sqrt( $contentsLength/3 ) ); // round up the square root
+            
+            // WE WERE SETTING SIZE AS DYNAMIC TO HOW MANY PIXELS SO LEAVE THIS HERE
+           // $squared = ceil( sqrt( $contentsLength/3 ) ); // round up the square root
+           
+           // INSTEAD NOW FORCING 512 WHILST TEST THIS
+             $squared = 512;
+           
+           
+//           i notice leaves black space. could be good to leave data maps with black space so they can be written to.
+
+
             
 //            error_log( $squared ); 
             

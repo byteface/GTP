@@ -9,9 +9,9 @@
 	<body>
 
 
-    <canvas width="256" height="256" id="positive"></canvas>
-    <canvas width="256" height="256" id="mainCanvas"></canvas>
-    <canvas width="256" height="256" id="outputCanvas"></canvas>    
+    <canvas width="512" height="512" id="positive"></canvas>
+    <canvas width="512" height="512" id="mainCanvas"></canvas>
+    <canvas width="512" height="512" id="outputCanvas"></canvas>    
 
 
 
@@ -54,7 +54,7 @@
 
 
 
-            if( (r==(20./255.)) && (g==(8./255.))  )
+            if( (r==(20./255.)) && (g==(8./255.)) && (b==(1./255.)) )
             {
                // col = vec4( 1.0, 1.0, 1.0, 1.0 );
             }
@@ -118,7 +118,7 @@
 
         // load in some image data
         var pos = new GTP.Loader();
-        pos.loadAsImage( "data/random.png", "positive", function() { 
+        pos.loadAsImage( "data/generateImageTest.png", "positive", function() { 
             main();
         });
 
@@ -139,8 +139,8 @@
                 gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things  
                 gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
                 
-                gl.viewportWidth = 256;
-                gl.viewportHeight = 256;
+                gl.viewportWidth = 512;
+                gl.viewportHeight = 512;
             } 
             
             var glTest = WEBGL;
@@ -150,7 +150,11 @@
             
             
             
+            /*
             
+            METHOD ADDED SO YOU CAN CLICK ON PIXEL AND SEE ITS CHARACTERS>/// .. be good to read a few pixels in
+            
+            */
             
             
             // for tracing the value
