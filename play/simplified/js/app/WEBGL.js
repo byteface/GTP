@@ -37,11 +37,47 @@ WEBGL = {
     },
 
 
+
+
+    createShaderQuery : function ( query )
+    {
+            
+            var letters = query.split("");
+      //          for( var i=0; i<letters.length; i++ ){
+                    
+        //        }
+          
+          // hard coded 'the'
+            
+        var str = "\
+        precision mediump float;\
+        varying vec2 vTextureCoord;\
+        uniform sampler2D uSampler;\
+        void main() {\
+            vec2 onePixel = vec2(1.0, 1.0) / vec2(512.0,512.0);\
+            vec4 col = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ));\
+            vec3 rgb = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t )).rgb;\
+            float r = rgb.r;\
+            float g = rgb.g;\
+            float b = rgb.b;\
+            if( !( (r==("+GTP.encodeMap[letters[0]]+"./255.)) && (g==("+GTP.encodeMap[letters[1]]+"./255.)) && (b==("+GTP.encodeMap[letters[2]]+"./255.)) ) ){\
+                col = vec4( 1.0, 0.0, 0.0, 1.0 );\
+                }\
+            gl_FragColor = col;\
+        }\
+        ";
+        
+        return str;
+    },
+
+
+
+
     initShaders : function () // : Canvas data you want to draw to webGL
     {
     
         // the static ones
-        var fragmentShader = this.getShaderSource("shader-fs");
+        var fragmentShader =  this.createShaderQuery("cut");//this.getShaderSource("shader-fs"); // TEST - you can now type a set of letters here to query
         var vertexShader = this.getShaderSource("shader-vs");
 
         fragmentShader = 'precision highp float;' + fragmentShader; // annoying requirement is annoying

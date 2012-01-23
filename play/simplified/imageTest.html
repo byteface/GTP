@@ -103,7 +103,7 @@
             gl_Position = /*uPMatrix * uMVMatrix * */vec4(aVertexPosition, 1.0);
 
 
-//            vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool
+         //  vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool
 
             
             vTextureCoord = aTextureCoord;// * vec2(1.0,1.0);
@@ -186,26 +186,47 @@
 
 
                     $("p").text(arr.join(""));
-
-
-
-
                     
                     
-        	     //  var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
-//        alert("HEX: " + hex);
-    });
+                    
+                    });
 
 
         }
         
         
         
+        /*
+        function createShaderQuery( query )
+        {
         
+//            var letters = query.split("");
+  //          for( var i=0; i<letters.length; i++ ){
+                
+    //        }
+      
+      // hard coded 'ple'
         
-        
-        
-        
+            var str = "\
+            precision mediump float;\
+            varying vec2 vTextureCoord;\
+            uniform sampler2D uSampler;\
+            void main() {\
+                vec2 onePixel = vec2(1.0, 1.0) / vec2(512.0,512.0);\
+                vec3 rgb = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ) ).rgb;\
+                float r = rgb.r;\
+                float g = rgb.g;\
+                float b = rgb.b;\
+                if( !( (r==(16./255.)) && (g==(12./255.)) && (b==(5./255.)) ) ){\
+                    col = vec4( 1.0, 0.0, 0.0, 1.0 );\
+                    }\
+                gl_FragColor = color;\
+            }\
+            ";
+            
+            return str;
+        }
+*/
         
         
             // some debug utils
