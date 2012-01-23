@@ -37,7 +37,7 @@ WEBGL = {
     },
 
 
-
+    query:"the",
 
     createShaderQuery : function ( query )
     {
@@ -77,7 +77,7 @@ WEBGL = {
     {
     
         // the static ones
-        var fragmentShader =  this.createShaderQuery("cut");//this.getShaderSource("shader-fs"); // TEST - you can now type a set of letters here to query
+        var fragmentShader =  this.createShaderQuery(this.query);//this.getShaderSource("shader-fs"); // TEST - you can now type a set of letters here to query
         var vertexShader = this.getShaderSource("shader-vs");
 
         fragmentShader = 'precision highp float;' + fragmentShader; // annoying requirement is annoying

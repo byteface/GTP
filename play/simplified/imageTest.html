@@ -7,16 +7,45 @@
 	</head>
 
 	<body>
+	
+    <script type="text/javascript" src="js/includer.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>    	
+	
 
+    <div>
+        <label for="message">Type your search</label>
+        <textarea id="myMessage" name="message1"></textarea>
+    </div>
+
+    <br />
+    <script>
+    /*
+    $(function(){
+    
+        $("#myMessage").keyup(function() {
+
+            var value = $(this).val();
+            if(value.length==3){
+                //alert("we have 3 chars");
+                
+            glTest.query = "the"; // so can run query through from here
+            
+            glTest.run( 'positive' );
+                
+                
+            }
+
+        });
+    */
+    });
+
+    </script>
+    
+    
 
     <canvas width="512" height="512" id="positive"></canvas>
     <canvas width="512" height="512" id="mainCanvas"></canvas>
 <!--    <canvas width="512" height="512" id="outputCanvas"></canvas>    -->
-
-
-
-    <script type="text/javascript" src="js/includer.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>    
 
 
 
@@ -145,7 +174,32 @@
             
             var glTest = WEBGL;
             glTest.gl = gl;
+            
+            
+            glTest.query = "the"; // so can run query through from here
+            
             glTest.run( 'positive' );
+            
+            
+            
+            
+            
+            
+            // ------------------------------------>>>>> PASS A QUERY
+            $("#myMessage").keyup(function() {
+                var value = $(this).val();
+                if(value.length==3){
+                    //alert("we have 3 chars");
+                    glTest.query = value; // so can run query through from here
+                    glTest.run( 'positive' );
+                }
+            });
+            
+            
+            
+            
+            
+            
             
             
             
@@ -255,7 +309,7 @@
 		</script>
 		
 		
-    <p></p>
+		<p></p>
 				
 	</body>
 </html>
