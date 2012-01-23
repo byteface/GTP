@@ -61,7 +61,7 @@ WEBGL = {
             float g = rgb.g;\
             float b = rgb.b;\
             if( !( (r==("+GTP.encodeMap[letters[0]]+"./255.)) && (g==("+GTP.encodeMap[letters[1]]+"./255.)) && (b==("+GTP.encodeMap[letters[2]]+"./255.)) ) ){\
-                col = vec4( 1.0, 0.0, 0.0, 1.0 );\
+                col = vec4( 1.0, 1.0, 1.0, 1.0 );\
                 }\
             gl_FragColor = col;\
         }\

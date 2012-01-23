@@ -13,7 +13,7 @@
 	
 
     <div>
-        <label for="message">Type your search</label>
+        <label for="message">At the moment only 3 letter search, will sort more soon...</label>
         <textarea id="myMessage" name="message1"></textarea>
     </div>
 
@@ -25,7 +25,7 @@
 <!--    <canvas width="512" height="512" id="outputCanvas"></canvas>    -->
 
 
-<!--
+<!-- NOTE * THIS SHADER NOT CURRENTLY USED - DRAWING DYNAMIC ONE IN WEGL CLASS
     <script id="shader-fs" type="x-shader/x-fragment">
     
         precision mediump float;
@@ -154,7 +154,7 @@
             glTest.gl = gl;
             
             
-            glTest.query = "the"; // so can run query through from here
+            glTest.query = "   "; // so can run query through from here
             
             glTest.run( 'positive' );
             
@@ -166,7 +166,15 @@
             // ------------------------------------>>>>> PASS A QUERY
             $("#myMessage").keyup(function() {
                 var value = $(this).val();
+                
+               // while(value.length<4){   // FOR NOW FORCING SPACES FOR SHORTER SEARCHES
+                 //   value+=" ";
+                //}
+                
                 if(value.length==3){
+                
+                
+                
                     //alert("we have 3 chars");
                     glTest.query = value; // so can run query through from here
                     glTest.run( 'positive' );
