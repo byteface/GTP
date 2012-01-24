@@ -39,6 +39,9 @@ WEBGL = {
 
     query:"the",
 
+
+// TODO - this should also take a constant 'shader type' that is the query and grab the shader from a shader factory so i can create whatever shaders we need as a plugins folder
+// effectively gonna need a shader for any string operation, with us yeilding the output textures as results.
     createShaderQuery : function ( query )
     {
             
@@ -47,7 +50,10 @@ WEBGL = {
                     
         //        }
           
-          // hard coded 'the'
+
+
+
+
             
             // SO - the beast. we need to runtime do any query so therefore generate required shader code for that query
             // which includes 
