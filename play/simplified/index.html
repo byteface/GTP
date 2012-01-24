@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		<title>proccess GPU</title>		
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+	
+    <script type="text/javascript" src="js/includer.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>    	
+	
+
+    <div>
+        <label for="message">So this image is derived from a huge text document with all letters as channels on pixels. <br />
+        so now on the GPU i can type letters it will filter them out FAST. (i.e type whole alphabet and a space to recreate image) <br />
+        also roll over the image to see what characters are stored.
+        </label>
+        <br />
+        <textarea id="myMessage" name="message1"></textarea>
+    </div>
+
+    <br />
+    
+
+    <canvas width="512" height="512" id="positive"></canvas>
+    <canvas width="512" height="512" id="mainCanvas"></canvas>
+<!--    <canvas width="512" height="512" id="outputCanvas"></canvas>    -->
+    
+    <script id="shader-vs" type="x-shader/x-vertex">
+    
+        attribute vec3 aVertexPosition;
+        attribute vec2 aTextureCoord;
+    
+    //    uniform mat4 uMVMatrix;
+      //  uniform mat4 uPMatrix;
+    
+        varying vec2 vTextureCoord;
+    
+    
+        void main(void) {
+            gl_Position = /*uPMatrix * uMVMatrix * */vec4(aVertexPosition, 1.0);
+
+
+         //  vTextureCoord = aTextureCoord * vec2(-1.0,1.0); // MINUS ONE CAN REVERSE OUR DATA *I>E REVERSE ARRAYS ... blimey. thats very cool
+
+            
+            vTextureCoord = aTextureCoord;// * vec2(1.0,1.0);
+            
+            
+        }
+        
+    </script>
+
+    <script>    
+
+
+        // load in some image data
+        var pos = new GTP.Loader();
+        pos.loadAsImage( "data/generateImageTest.png", "positive", function() { 
+            main();
+        });
+
+        function main()
+        {
+            var gl;
+            var canvas = document.getElementById('mainCanvas');
+            try {
+                gl = canvas.getContext('experimental-webgl');
+            } catch (e) {
+                throw new Error('no WebGL found');
+            }
+            
+            if (gl)
+            {
+                gl.clearColor(0.0, 0.0, 1.0, 1.0);                      // Set clear color to blue, fully opaque  
+                gl.enable(gl.DEPTH_TEST);                               // Enable depth testing  
+                gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things  
+                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
+                
+                gl.viewportWidth = 512;
+                gl.viewportHeight = 512;
+            } 
+            
+            var glTest = WEBGL;
+            glTest.gl = gl;
+            
+            
+            glTest.query = "*"; // forcing a not often used character for init
+            
+            glTest.run( 'positive' );
+            
+            
+            
+            
+            
+            
+            // ------------------------------------>>>>> PASS A QUERY
+            $("#myMessage").keyup(function() {
+                var value = $(this).val();
+                
+                if(value.length==0) value="*"; // forcing a not often used character
+                
+                // pass the query to gl for proccessing
+                glTest.query = value;
+                glTest.rerun();
+                            
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /*
+            
+            METHOD ADDED SO YOU CAN CLICK ON PIXEL AND SEE ITS CHARACTERS>/// .. be good to read a few pixels in
+            
+            */
+            
+            
+            // for tracing the value
+                jQuery('#positive').mousemove(function(e){ // TODO - need to do one of these for GL.. seems to work fine for canvas though
+                    var position = findPos(this);
+                    var x = e.pageX - position.x;
+                    var y = e.pageY - position.y;
+                    var coordinate = "x=" + x + ", y=" + y;
+                    var canvas = this.getContext('2d');
+                    var p = canvas.getImageData(x, y, 1000, 1).data;
+                    
+              //      alert( p[0] +"|"+ p[1] +"|"+ p[2] +"=="+ GTP.map[p[0]] +""+ GTP.map[p[1]] +""+ GTP.map[p[2]] );
+                    var i=0;
+                    var len=p.length;
+                    
+                    var arr=[];
+                    
+                    for( i; i<len; i+=4 ) {
+                        arr.push( GTP.map[p[i]] );
+                        arr.push( GTP.map[p[i+1]] );
+                        arr.push( GTP.map[p[i+2]] );
+                //        str += map[pix[i+3]]+"";                        
+                    }
+                        
+                   // document.write( arr.join("") );
+                    
+//                    alert( arr.join("") );
+                                         
+
+
+                    $("p").text(arr.join(""));
+                    
+                    
+                    
+                    });
+
+
+        }
+        
+
+            // some debug utils
+        
+        
+            function findPos(obj){
+                var current_left = 0, current_top = 0;
+                if (obj.offsetParent){
+                do{
+                    current_left += obj.offsetLeft;
+                    current_top += obj.offsetTop;
+                }while(obj = obj.offsetParent);
+                return {x: current_left, y: current_top};
+                }
+                return undefined;
+            }
+    
+            function rgbToHex(r, g, b){
+                if (r > 255 || g > 255 || b > 255)
+                    throw "Invalid color component";
+                return ((r << 16) | (g << 8) | b).toString(16);
+            }
+    
+  
+
+		</script>
+		
+		
+		<p></p>
+				
+	</body>
+</html>
