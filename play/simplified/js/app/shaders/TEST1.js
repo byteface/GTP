@@ -2,6 +2,8 @@
 // only starting from the red channel.. so its not great but a great indicator of how
 // we can potentially get this working
 
+// TODO - this is forced 3 letters.. make it do 2 or 1 for testing stuff
+
 
 function TEST1( query ){
     

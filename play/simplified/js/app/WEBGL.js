@@ -44,7 +44,7 @@ WEBGL = {
 // effectively gonna need a shader for any string operation, with us yeilding the output textures as results.
     createShaderQuery : function ( query, type )
     {
-        return TEST1(query); // force returning shaders // check shader folder and create different tests
+        return TEST2(query); // force returning shaders // check shader folder and create different tests
     },
 
 
@@ -140,15 +140,15 @@ WEBGL = {
     tick : function () {
     ref=this
         requestAnimFrame(function ticky(){ ref.tick() });
-        this.drawScene()
-        this.animate();
+        this.drawScene();                                
+        this.animate();                     
     },
 
     lastTime : 0,
 
     animate : function () {
     
-    window.console.log("asdf");
+   // window.console.log("asdf");
     
         var timeNow = new Date().getTime();
         if (this.lastTime != 0) {
