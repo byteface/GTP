@@ -33,11 +33,11 @@ WEBGL = {
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.enable(this.gl.DEPTH_TEST);
 
-        this.tick();
+        //this.tick();
     },
 
 
-    query:"the",
+    query:"",
 
 
 // TODO - this should also take a constant 'shader type' that is the query and grab the shader from a shader factory so i can create whatever shaders we need as a plugins folder
@@ -51,11 +51,10 @@ WEBGL = {
 
 
     initShaders : function () // : Canvas data you want to draw to webGL
-    {
-    
+    {    
         // the static ones
-        var fragmentShader =  this.createShaderQuery(this.query);//this.getShaderSource("shader-fs"); // TEST - you can now type a set of letters here to query
-//        var fragmentShader = this.getShaderSource("shader-fs"); // TEST - 
+        var fragmentShader =  this.createShaderQuery(this.query);
+//        var fragmentShader = this.getShaderSource("shader-fs"); // if using static shader on html page
         var vertexShader = this.getShaderSource("shader-vs");
 
         fragmentShader = 'precision highp float;' + fragmentShader; // annoying requirement is annoying
@@ -113,16 +112,11 @@ WEBGL = {
     onImageReady : function (e){
     
         var img = e.target;
-        var scope = img.ref; // TODO - not a good was to do this... get rid
+        var scope = img.ref; // TODO - not a good was to do this... but works
 
-
-//            window.console.log(img);
-
-      //  scope.gl.texImage2D( scope.gl.TEXTURE_2D, 0, scope.gl.RGBA, scope.gl.RGBA, scope.gl.UNSIGNED_BYTE, e.target );
-        
-//            scope.texture.image = scope.gl.createTexture();
-        
         scope.handleLoadedTexture(scope.texture);
+        
+        scope.drawScene();
     },
 
 
@@ -134,30 +128,6 @@ WEBGL = {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
       },
-
-
-
-    tick : function () {
-    ref=this
-        requestAnimFrame(function ticky(){ ref.tick() });
-        this.drawScene();                                
-        this.animate();                     
-    },
-
-    lastTime : 0,
-
-    animate : function () {
-    
-   // window.console.log("asdf");
-    
-        var timeNow = new Date().getTime();
-        if (this.lastTime != 0) {
-            var elapsed = timeNow - this.lastTime;
-        }
-        this.lastTime = timeNow;
-    },
-
-
 
 
     initBuffers : function () {
