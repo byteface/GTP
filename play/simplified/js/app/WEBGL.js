@@ -17,7 +17,6 @@ WEBGL = {
     
     tokenisedMapRef : null,
 
-
     run : function (str) {
 
         this.mvMatrix = mat4.create(),
@@ -34,6 +33,16 @@ WEBGL = {
         this.gl.enable(this.gl.DEPTH_TEST);
 
         //this.tick();
+    },
+
+
+    /*
+        so if run already been called and you just want to run a new query on the GPU then
+        call this after setting the query
+    */
+    rerun : function () {
+        this.initShaders();
+        this.drawScene();
     },
 
 

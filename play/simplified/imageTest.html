@@ -13,7 +13,10 @@
 	
 
     <div>
-        <label for="message">So this is a huge text document with all letters as channels on pixels. type letters it will filter them out. (i.e type whole alphabet and a space to recreate image)</label>
+        <label for="message">So this image is derived from a huge text document with all letters as channels on pixels. <br />
+        so now on the GPU i can type letters it will filter them out FAST. (i.e type whole alphabet and a space to recreate image) <br />
+        also roll over the image to see what characters are stored.
+        </label>
         <br />
         <textarea id="myMessage" name="message1"></textarea>
     </div>
@@ -97,23 +100,12 @@
             $("#myMessage").keyup(function() {
                 var value = $(this).val();
                 
-               // while(value.length<4){   // FOR NOW FORCING SPACES FOR SHORTER SEARCHES
-                 //   value+=" ";
-                //}
-                
                 if(value.length==0) value="*"; // forcing a not often used character
                 
-                
-                
-                    //alert("we have 3 chars");
-                    glTest.query = value; // so can run query through from here
-                   // glTest.run( 'positive' );
-                   
-                   // rather than run which redoes everthing
-                    glTest.initShaders();
-                    glTest.drawScene();
-                   
-                //}
+                // pass the query to gl for proccessing
+                glTest.query = value;
+                glTest.rerun();
+                            
             });
             
             
