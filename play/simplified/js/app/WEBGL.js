@@ -53,7 +53,7 @@ WEBGL = {
 // effectively gonna need a shader for any string operation, with us yeilding the output textures as results.
     createShaderQuery : function ( query, type )
     {
-        return TEST2(query); // force returning shaders // check shader folder and create different tests
+        return TEST4(query); // force returning shaders // check shader folder and create different tests
     },
 
 

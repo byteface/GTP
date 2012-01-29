@@ -7,32 +7,6 @@
 function TEST2( query ){
     
     var letters = query.split("");
-    
-    
-    
-    // SO - the beast. we need to runtime do any query so therefore generate required shader code for that query
-    // which includes 
-    
-    // • starting from all channels.
-    
-    // • looking at previous pixels on the textures
-    
-    // • looking at forward textures
-    
-    // • checking back and forward as far as the length of the word
-    
-    // im guessing theres 2 approaches. brute force, and a tidy little alogrithm. for now im gonna go with the first approach... lol
-    
-    
-    // im gonna check our current pixel first for all eventualities
-    
-    // maybe best to make an array the size of the string both backwards and forwards?
-        
-        
- 
-
-
-
 
         var one = "\
         precision mediump float;\
@@ -57,18 +31,6 @@ function TEST2( query ){
             }
   
             str = str + ') ){\ ';
-
-
-// LOOK BACKWORDS
-//            int count=0;
-//            vec3 pix = texture2D( uSampler, vTextureCoord + vec2(onePixel.x*count, 0.0) ).rgb; // TESTING including rgb of the next pixel
-//            r = pix.r;
-//            r = pix.g;
-//            r = pix.b;
-            
-
-
-
 
             var sum = one + str +
             "\
