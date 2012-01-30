@@ -47,8 +47,9 @@ function TEST5( query ){
         
             var chan=3; // move channel backwards
             var pixel= pixrange;//0.0;
-            
-            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+
+            str += 'if( false ){\ ';            
+            str += '}else if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
@@ -81,7 +82,8 @@ function TEST5( query ){
             var chan=2; // move channel backwards
             var pixel= pixrange;//0.0;
             
-            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+            str += 'if( false ){\ ';            
+            str += '}else if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
@@ -115,7 +117,8 @@ function TEST5( query ){
             var chan=1; // move channel backwards
             var pixel= pixrange;//0.0;
             
-            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+            str += 'if( false ){\ ';            
+            str += '}else if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
