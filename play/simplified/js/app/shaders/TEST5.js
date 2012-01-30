@@ -30,7 +30,7 @@ function TEST5( query ){
         void main() {\
             vec4 col = texture2D( uSampler, vec2( vTextureCoord.s, vTextureCoord.t ));\
             int match=0;\
-            const float pixelRange=float("+Math.round(lettersLen/3)+');\
+            const float pixelRange=float("+Math.ceil(lettersLen/3)+');\
             const int lettersLen='+lettersLen+';\
             ';
             
@@ -39,7 +39,7 @@ function TEST5( query ){
         
 
 
-        var pixrange = Math.round(lettersLen/3); 
+        var pixrange = Math.ceil(lettersLen/3); 
         
         while(pixrange>0){
         
@@ -48,8 +48,7 @@ function TEST5( query ){
             var chan=3; // move channel backwards
             var pixel= pixrange;//0.0;
             
-            str += 'if( match==0 ){\ ';
-            str += 'if( hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
@@ -67,13 +66,13 @@ function TEST5( query ){
                 match=1;\
                 }\ ";
             }
-            str += '}\ ';
+
         }
 
  
         
         
-        var pixrange = Math.round(lettersLen/3); 
+        var pixrange = Math.ceil(lettersLen/3); 
         
         while(pixrange>0){
         
@@ -82,8 +81,7 @@ function TEST5( query ){
             var chan=2; // move channel backwards
             var pixel= pixrange;//0.0;
             
-            str += 'if( match==0 ){\ ';            
-            str += 'if( hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
@@ -101,14 +99,14 @@ function TEST5( query ){
                 match=1;\
                 }\ ";
             }
-            str += '}\ ';
+
         }        
         
         
         
         
         
-        var pixrange = Math.round(lettersLen/3); 
+        var pixrange = Math.ceil(lettersLen/3); 
         
         while(pixrange>0){
         
@@ -117,8 +115,7 @@ function TEST5( query ){
             var chan=1; // move channel backwards
             var pixel= pixrange;//0.0;
             
-            str += 'if( match==0 ){\ ';            
-            str += 'if( hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
+            str += 'if( match==0 && hasLetter( float('+GTP.encodeMap[letters[lettersLen-1]]+'), '+pixel.toFixed(1)+', int('+chan+') )';
             
             for( var i=2; i<lettersLen+1; i++ ){
                 chan-=1;
@@ -136,7 +133,7 @@ function TEST5( query ){
                 match=1;\
                 }\ ";
             }
-            str += '}\ ';
+
         }
         
         
