@@ -14,5 +14,5 @@ js_includer("js/app/shaders/TEST1.js");
 js_includer("js/app/shaders/TEST2.js");
 js_includer("js/app/shaders/TEST3.js");
 js_includer("js/app/shaders/TEST4.js");
-
+js_includer("js/app/shaders/TEST5.js");
 
